@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath | 医生工作台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#bde9ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e0",
+                    "on-tertiary-fixed": "#321201",
+                    "on-primary-fixed-variant": "#154c60",
+                    "on-background": "#1a1c1b",
+                    "error-container": "#ffdad6",
+                    "secondary": "#44664e",
+                    "secondary-fixed": "#c6eccd",
+                    "on-surface-variant": "#41484c",
+                    "on-tertiary-container": "#fffbff",
+                    "primary": "#2f6277",
+                    "on-surface": "#1a1c1b",
+                    "secondary-fixed-dim": "#abcfb2",
+                    "tertiary": "#7f5137",
+                    "outline-variant": "#c0c7cc",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#9ccee5",
+                    "surface": "#faf9f7",
+                    "on-secondary-fixed": "#00210f",
+                    "surface-container": "#efeeec",
+                    "on-tertiary-fixed-variant": "#673c24",
+                    "inverse-surface": "#2f3130",
+                    "primary-fixed-dim": "#9ccee5",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-secondary-fixed-variant": "#2d4e37",
+                    "surface-dim": "#dadad8",
+                    "tertiary-fixed": "#ffdbca",
+                    "surface-tint": "#326479",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001f2a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#faf9f7",
+                    "outline": "#71787c",
+                    "surface-container-high": "#e9e8e6",
+                    "on-primary-container": "#fbfdff",
+                    "tertiary-fixed-dim": "#f7b999",
+                    "surface-bright": "#faf9f7",
+                    "on-secondary-container": "#4a6c54",
+                    "secondary-container": "#c6eccd",
+                    "primary-container": "#4a7b90",
+                    "surface-container-low": "#f4f3f1",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#9b694e",
+                    "surface-variant": "#e3e2e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "display": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7cc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- 侧边栏导航 -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-low flex flex-col py-margin-desktop px-4 gap-unit z-40 shadow-lg shadow-primary/5">
+<div class="mb-10 px-2">
+<span class="font-display text-headline-md font-bold text-primary">SerenePath</span>
+</div>
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-bold">Serene 医生</p>
+<p class="text-label-sm text-on-surface-variant">临床心理学家</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary-fixed-dim text-on-secondary-container dark:text-on-secondary-fixed rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">控制面板</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">患者列表</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">日程安排</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">video_chat</span>
+<span class="font-label-md text-label-md">视频咨询</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">评估报告</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-md text-label-md shadow-md mb-4 hover:opacity-90 transition-opacity">
+                开始接诊
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">帮助中心</span>
+</a>
+</div>
+</aside>
+<!-- 主内容区域 -->
+<main class="ml-64 p-margin-desktop min-h-screen">
+<header class="flex justify-between items-end mb-10">
+<div>
+<h1 class="font-display text-headline-lg text-on-surface">欢迎回来，Serene 医生</h1>
+<p class="text-body-md text-on-surface-variant">这是您今天的诊务概览。</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container rounded-full cursor-pointer">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<div class="px-4 py-2 bg-surface-container-high rounded-full flex items-center gap-2 border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-md font-medium text-on-surface">在线</span>
+</div>
+</div>
+</header>
+<!-- Bento 网格布局 -->
+<div class="grid grid-cols-12 gap-6">
+<!-- 指标行 -->
+<section class="col-span-12 grid grid-cols-4 gap-6">
+<div class="bento-card col-span-1 bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-surface-container flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-xl w-fit">group</span>
+<p class="text-label-md text-on-surface-variant">患者总数</p>
+<h3 class="text-headline-md font-bold text-on-surface">1,284</h3>
+<div class="flex items-center gap-1 text-secondary text-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>较上月增长 12%</span>
+</div>
+</div>
+<div class="bento-card col-span-1 bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-surface-container flex flex-col gap-2">
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-2 rounded-xl w-fit">clinical_notes</span>
+<p class="text-label-md text-on-surface-variant">活跃案例</p>
+<h3 class="text-headline-md font-bold text-on-surface">42</h3>
+<div class="flex items-center gap-1 text-secondary text-label-sm">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>本周已结案 8 例</span>
+</div>
+</div>
+<div class="bento-card col-span-1 bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-surface-container flex flex-col gap-2">
+<span class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-2 rounded-xl w-fit">video_chat</span>
+<p class="text-label-md text-on-surface-variant">平均咨询时长</p>
+<h3 class="text-headline-md font-bold text-on-surface">48m</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-label-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>咨询效率稳定</span>
+</div>
+</div>
+<div class="bento-card col-span-1 bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-surface-container flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-xl w-fit">star</span>
+<p class="text-label-md text-on-surface-variant">患者满意度</p>
+<h3 class="text-headline-md font-bold text-on-surface">4.9/5.0</h3>
+<div class="flex items-center gap-1 text-secondary text-label-sm">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+<span>基于 215 条评价</span>
+</div>
+</div>
+</section>
+<!-- 今日日程时间轴 -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-surface-container overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-headline-md font-bold text-on-surface">今日日程</h2>
+<div class="flex items-center gap-2">
+<span class="text-label-md text-on-surface-variant">2024年5月24日</span>
+<button class="material-symbols-outlined p-1 hover:bg-surface-variant rounded-lg transition-colors">calendar_month</button>
+</div>
+</div>
+<div class="relative h-[400px] overflow-y-auto custom-scrollbar pr-4">
+<!-- 垂直时间线 -->
+<div class="absolute left-[88px] top-0 bottom-0 w-[1px] bg-outline-variant/30"></div>
+<!-- 时间线条目 1 (已完成) -->
+<div class="relative flex gap-10 mb-8 opacity-60">
+<div class="w-16 text-right pt-1">
+<span class="text-label-md font-bold text-on-surface-variant">09:00 AM</span>
+</div>
+<div class="relative flex-1 bg-surface-container p-5 rounded-2xl border-l-4 border-outline">
+<div class="absolute left-[-45px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-outline ring-4 ring-surface-container-lowest"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Sarah Mitchell</h4>
+<p class="text-label-sm text-on-surface-variant">随访：认知行为治疗</p>
+</div>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-label-sm font-medium">已完成</span>
+</div>
+</div>
+</div>
+<!-- 时间线条目 2 (进行中) -->
+<div class="relative flex gap-10 mb-8">
+<div class="w-16 text-right pt-1">
+<span class="text-label-md font-bold text-primary">10:30 AM</span>
+</div>
+<div class="relative flex-1 bg-primary-container/10 p-5 rounded-2xl border-l-4 border-primary shadow-md">
+<div class="absolute left-[-45px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary ring-4 ring-primary-container/20 animate-pulse"></div>
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-cover bg-center" data-alt="年轻男性的专业肖像" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrnwKUfPux3u9hi-tt0Uc2WyzXM6RX6doKHDgl3f4XR-8O_lhuqNhWwbKOc9EKl2bWicMcgbAAjed-Gz-yiU4OpRDMsdPsI70_XxXXJHg9ARsK97JCjTW3DZcwB8Tc1KU9lCQtAKj-z33kNibHAnl2oWt7At0J3w1pT4LpNwOPhdIoKl4bU77L3_2FYHWtiBtMksjeHPR_i6c-mSi3xl6cEvv7jKm_-lblyYXQK3A4KGOccv05uimRkzbL1Fi8E9aZTRhMEx8etqc')"></div>
+<div>
+<h4 class="font-bold text-on-surface">James Wilson</h4>
+<p class="text-label-sm text-on-surface-variant">初诊：焦虑管理</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full text-label-sm font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                    咨询中
+                                </button>
+</div>
+</div>
+</div>
+<!-- 时间线条目 3 (待接诊) -->
+<div class="relative flex gap-10 mb-8">
+<div class="w-16 text-right pt-1">
+<span class="text-label-md font-bold text-on-surface-variant">01:00 PM</span>
+</div>
+<div class="relative flex-1 bg-surface-container-low p-5 rounded-2xl border-l-4 border-secondary/40">
+<div class="absolute left-[-45px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-outline-variant ring-4 ring-surface-container-lowest"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Emily Chen</h4>
+<p class="text-label-sm text-on-surface-variant">家庭咨询会谈</p>
+</div>
+<span class="text-label-sm font-medium text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">videocam</span>
+                                    远程咨询
+                                </span>
+</div>
+</div>
+</div>
+<!-- 时间线条目 4 (待接诊) -->
+<div class="relative flex gap-10 mb-8">
+<div class="w-16 text-right pt-1">
+<span class="text-label-md font-bold text-on-surface-variant">02:30 PM</span>
+</div>
+<div class="relative flex-1 bg-surface-container-low p-5 rounded-2xl border-l-4 border-secondary/40">
+<div class="absolute left-[-45px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-outline-variant ring-4 ring-surface-container-lowest"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Robert Fox</h4>
+<p class="text-label-sm text-on-surface-variant">压力管理评估</p>
+</div>
+<span class="text-label-sm font-medium text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                    线下诊室
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 待办请求与趋势 -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<!-- 待处理请求 -->
+<section class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-surface-container flex-1">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-label-md font-bold text-on-surface">预约申请</h2>
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded-full text-[10px] font-bold">3 条新申请</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- 请求条目 -->
+<div class="p-4 bg-surface-container-low rounded-2xl border border-surface-container">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-cover bg-center" data-alt="中年女性的专业肖像" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0serKCOB3j0vtXnNV3vPlmqidyWQe8GQfdWaM5rjPK4aJCx1qJ6M-4A4QX0ahRqArJpvXBMke0bISoQCKBV-1bPBKjFgWtY5HerUPshFT87T033z1DiucVh6vFyof4aOr1ex7PGxV26e9vGyLIHwmnOwwJNDKDhxU7KZpqt5b8KDk5vfC7RHr8ZA1rGXFED5vt89BYE5ROx53n43alTZWR1Y25vhtONIW4hu-TXW45Y-Gff3AitiAVM-regA0iQGguoE6n2mF8Zs')"></div>
+<div class="flex-1">
+<h4 class="text-label-md font-bold text-on-surface leading-none">Amanda Lee</h4>
+<p class="text-[11px] text-on-surface-variant">新患者转诊</p>
+</div>
+</div>
+<div class="flex items-center justify-between gap-2 mb-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="text-[11px]">5月26日</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="text-[11px]">下午 04:00</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 bg-surface-variant text-on-surface-variant rounded-xl text-label-sm font-bold hover:bg-outline-variant transition-colors">拒绝</button>
+<button class="py-2 bg-secondary text-on-secondary rounded-xl text-label-sm font-bold hover:opacity-90 transition-opacity">批准</button>
+</div>
+</div>
+<!-- 迷你请求条目 -->
+<div class="flex items-center justify-between p-3 hover:bg-surface-variant rounded-xl transition-colors cursor-pointer border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div>
+<h4 class="text-[13px] font-bold text-on-surface">Marcus Thorne</h4>
+<p class="text-[10px] text-on-surface-variant">申请日期：5月28日</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- 月度就诊趋势 -->
+<section class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-surface-container">
+<h2 class="text-label-md font-bold text-on-surface mb-4">月度就诊流量</h2>
+<div class="h-32 flex items-end justify-between gap-2">
+<div class="flex-1 bg-primary-fixed/30 rounded-t-lg relative group h-[60%]">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">1月: 120</div>
+</div>
+<div class="flex-1 bg-primary-fixed/30 rounded-t-lg relative group h-[75%]">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">2月: 145</div>
+</div>
+<div class="flex-1 bg-primary-fixed/30 rounded-t-lg relative group h-[50%]">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">3月: 110</div>
+</div>
+<div class="flex-1 bg-primary-fixed/30 rounded-t-lg relative group h-[90%]">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">4月: 180</div>
+</div>
+<div class="flex-1 bg-primary rounded-t-lg relative group h-[85%] shadow-lg shadow-primary/20">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-inverse-surface text-inverse-on-surface text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">5月: 172</div>
+</div>
+</div>
+<div class="flex justify-between mt-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+<span>一月</span>
+<span>二月</span>
+<span>三月</span>
+<span>四月</span>
+<span>五月</span>
+</div>
+</section>
+</div>
+<!-- 最近咨询记录 -->
+<section class="col-span-12 bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-surface-container">
+<div class="flex justify-between items-center mb-8">
+<h2 class="text-headline-md font-bold text-on-surface">最近咨询</h2>
+<button class="text-primary font-bold text-label-md flex items-center gap-1 hover:underline">
+                        查看全部历史 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-surface-container">
+<th class="pb-4 font-label-md text-on-surface-variant">患者姓名</th>
+<th class="pb-4 font-label-md text-on-surface-variant">日期与时间</th>
+<th class="pb-4 font-label-md text-on-surface-variant">咨询类型</th>
+<th class="pb-4 font-label-md text-on-surface-variant">状态</th>
+<th class="pb-4 font-label-md text-on-surface-variant">备注</th>
+<th class="pb-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-bold text-on-surface">Kevin O'Brian</td>
+<td class="py-4 text-on-surface-variant">5月23日, 11:30 AM</td>
+<td class="py-4">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">videocam</span> 视频
+                                    </span>
+</td>
+<td class="py-4">
+<span class="text-secondary font-bold text-label-sm bg-secondary-container/30 px-3 py-1 rounded-full">已完成</span>
+</td>
+<td class="py-4 text-on-surface-variant text-body-md truncate max-w-[200px]">讨论了哀悼周期的进展情况...</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-bold text-on-surface">Lily Grayson</td>
+<td class="py-4 text-on-surface-variant">5月23日, 09:00 AM</td>
+<td class="py-4">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span> 线下
+                                    </span>
+</td>
+<td class="py-4">
+<span class="text-secondary font-bold text-label-sm bg-secondary-container/30 px-3 py-1 rounded-full">已完成</span>
+</td>
+<td class="py-4 text-on-surface-variant text-body-md truncate max-w-[200px]">初诊建档完成。已准备好进行...</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-bold text-on-surface">David Miller</td>
+<td class="py-4 text-on-surface-variant">5月22日, 04:15 PM</td>
+<td class="py-4">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">videocam</span> 视频
+                                    </span>
+</td>
+<td class="py-4">
+<span class="text-on-surface-variant font-bold text-label-sm bg-surface-container-highest px-3 py-1 rounded-full">已归档</span>
+</td>
+<td class="py-4 text-on-surface-variant text-body-md truncate max-w-[200px]">随访会谈。患者反馈...</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- 微交互脚本 -->
+<script>
+        // 为交互式卡片添加简单的缩放效果
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px) scale(1.02)';
+                card.style.boxShadow = '0 10px 30px rgba(47, 98, 119, 0.08)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+                card.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+            });
+        });
+
+        // 时间轴当前时间指示逻辑（仅作为演示）
+        const updateCurrentTime = () => {
+            const now = new Date();
+            // 在实际应用中，这里会根据当前时间移动红线
+        }
+        setInterval(updateCurrentTime, 60000);
+        updateCurrentTime();
+    </script>
+</body></html>

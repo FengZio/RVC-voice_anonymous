@@ -1,0 +1,1229 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.metricGrid,
+.detailGrid,
+.analyticsGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.audioBlock,
+.splitLayout,
+.scheduleLayout,
+.chatPanel {
+  display: grid;
+  gap: 14px;
+}
+
+.audioBlock {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+.audioBlock h3,
+.detailHead h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.audioBlock p,
+.detailHead p,
+.scheduleNote span {
+  margin: 4px 0 0;
+  color: #59676d;
+  line-height: 1.5;
+}
+
+.splitLayout {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+}
+
+.listColumn,
+.detailColumn,
+.recordsLayout,
+.chatSidebar,
+.chatDetail,
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.patientCard,
+.recordCard {
+  padding: 12px;
+  background: #f7fafb;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  text-align: left;
+}
+
+.patientCardActive {
+  background: rgba(185, 233, 255, 0.28);
+  border-color: rgba(47, 98, 119, 0.26);
+}
+
+.patientCardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.patientCard p,
+.recordCard p {
+  margin: 6px 0 0;
+  color: #59676d;
+  line-height: 1.5;
+}
+
+.detailHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.chatPanel {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+}
+
+.chatSidebar,
+.chatDetail {
+  gap: 12px;
+}
+
+.chatPatientList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chatPatientCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+  text-align: left;
+}
+
+.chatPatientCardActive {
+  background: rgba(185, 233, 255, 0.28);
+  border-color: rgba(47, 98, 119, 0.26);
+}
+
+.chatPatientCard p {
+  margin: 6px 0 0;
+  color: #59676d;
+  line-height: 1.5;
+}
+
+.chatMessages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+.chatIncoming,
+.chatOutgoing {
+  max-width: 82%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  line-height: 1.6;
+}
+
+.chatIncoming {
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+}
+
+.chatOutgoing {
+  margin-left: auto;
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+}
+
+.chatActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
+
+/* ── Doctor Overview Dashboard ── */
+.docOverview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.docHero {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f0f7f9 0%, #e8f2f5 50%, #f7fafb 100%);
+  border: 1px solid rgba(192, 199, 204, 0.45);
+  border-radius: 16px;
+}
+
+.docHeroMain h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #154c60;
+}
+
+.docHeroMain .docHeroSub {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #7a8b94;
+  line-height: 1.5;
+}
+
+.docHeroStats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 16px;
+}
+
+.docHeroStat {
+  padding: 14px;
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.4);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.docHeroStat strong {
+  display: block;
+  font-size: 22px;
+  color: #154c60;
+}
+
+.docHeroStat span {
+  font-size: 12px;
+  color: #7a8b94;
+  display: block;
+  margin-top: 4px;
+}
+
+.docHeroRight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.docHeroCard {
+  padding: 18px;
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.4);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.docHeroCard h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #154c60;
+}
+
+.docHeroCard .docHeroNum {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2f6277;
+  margin: 8px 0 4px;
+  line-height: 1;
+}
+
+.docHeroCard p {
+  margin: 0;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+/* Quick stats row */
+.docQuickGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.docQuickStat {
+  padding: 16px;
+  border: 1px solid rgba(192, 199, 204, 0.45);
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.docQuickStat:hover {
+  border-color: rgba(47, 98, 119, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.docQuickStat strong {
+  display: block;
+  font-size: 22px;
+  color: #154c60;
+}
+
+.docQuickStat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+/* Patient queue split */
+.docQueueLayout {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.docQueueList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.docQueueList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.docQueueList::-webkit-scrollbar-thumb {
+  background: rgba(192, 199, 204, 0.5);
+  border-radius: 2px;
+}
+
+.docPatientCard {
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.docPatientCard:hover {
+  border-color: rgba(47, 98, 119, 0.3);
+  background: #f8fbfc;
+}
+
+.docPatientCardActive {
+  background: rgba(185, 233, 255, 0.2);
+  border-color: rgba(47, 98, 119, 0.35);
+}
+
+.docPatientCard strong {
+  display: block;
+  font-size: 14px;
+  color: #154c60;
+  margin-bottom: 4px;
+}
+
+.docPatientCard .docPatientMeta {
+  font-size: 13px;
+  color: #7a8b94;
+  margin-bottom: 8px;
+}
+
+.docPatientCard .docPatientRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.docQueueDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.docDetailPanel {
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.docDetailBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.docDetailBar h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #154c60;
+}
+
+.docDetailBar p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+.docDetailBody {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.docDetailBody textarea {
+  min-height: 80px;
+  width: 100%;
+  border: 1px solid rgba(192, 199, 204, 0.7);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: #fff;
+  resize: vertical;
+}
+
+.docDetailBody textarea:focus {
+  outline: none;
+  border-color: rgba(47, 98, 119, 0.4);
+}
+
+.docDetailStats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.docDetailStat {
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.4);
+  border-radius: 12px;
+  background: #f7fafb;
+  text-align: center;
+}
+
+.docDetailStat strong {
+  display: block;
+  font-size: 15px;
+  color: #154c60;
+}
+
+.docDetailStat span {
+  font-size: 12px;
+  color: #7a8b94;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Bottom panels */
+.docBottomGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.docBottomCard {
+  padding: 20px;
+  border: 1px solid rgba(192, 199, 204, 0.45);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.docBottomCard h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: #154c60;
+}
+
+.docBottomCard .docBottomSub {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+.docFeedItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #4a5c66;
+}
+
+.docFeedItem + .docFeedItem {
+  border-top: 1px solid rgba(192, 199, 204, 0.3);
+}
+
+.docFeedItem svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #7a8b94;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.75);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f7fafb;
+}
+
+.primaryButton {
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field textarea,
+.field input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid rgba(192, 199, 204, 0.85);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+.scheduleGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.slotButton {
+  min-height: 42px;
+  border: 1px solid rgba(192, 199, 204, 0.65);
+  border-radius: 12px;
+  background: #f7fafb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slotButton:hover {
+  transform: translateY(-1px);
+}
+
+.scheduleNote {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #f7fafb;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+}
+
+.priceItem strong {
+  display: block;
+}
+
+.feedItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #f7fafb;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+}
+
+.sidebarTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarTop h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.sidebarTop p {
+  margin: 4px 0 0;
+  color: #59676d;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+  font-weight: 700;
+}
+
+.footerBox p {
+  margin: 10px 0 0;
+  color: #59676d;
+  line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+  .splitLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .chatPanel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .metricGrid,
+  .detailGrid,
+  .analyticsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .audioBlock,
+  .scheduleGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .metricGrid,
+  .detailGrid,
+  .analyticsGrid,
+  .scheduleGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Clinical Workflow ── */
+.workflowLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workflowMain {
+  display: grid;
+  grid-template-columns: auto 340px;
+  gap: 16px;
+  align-items: start;
+  min-height: 0;
+}
+
+.workflowLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workflowRight {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* IM / Audio-Video workspace */
+.workspacePanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.workspaceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.workspaceHeader h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #154c60;
+}
+
+.workspaceHeader p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+.workspaceActions {
+  display: flex;
+  gap: 8px;
+}
+
+.workspaceBody {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #fafcfd 0%, #f2f6f8 100%);
+}
+
+.workspaceBody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.workspaceBody::-webkit-scrollbar-thumb {
+  background: rgba(192, 199, 204, 0.5);
+  border-radius: 2px;
+}
+
+.msgBubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.msgIn {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.45);
+  border-bottom-left-radius: 4px;
+  color: #2f4350;
+}
+
+.msgOut {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #3d6b7a 0%, #2f6277 100%);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.msgTime {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 4px;
+  display: block;
+}
+
+.workspaceComposer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(192, 199, 204, 0.3);
+  background: #fff;
+}
+
+.workspaceComposer textarea {
+  flex: 1;
+  min-height: 42px;
+  max-height: 80px;
+  border: 1px solid rgba(192, 199, 204, 0.7);
+  border-radius: 12px;
+  padding: 10px 14px;
+  resize: none;
+  font-size: 14px;
+  background: #f7fafb;
+}
+
+.workspaceComposer textarea:focus {
+  outline: none;
+  border-color: rgba(47, 98, 119, 0.4);
+  background: #fff;
+}
+
+/* Patient Profile Sidebar */
+.profilePanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.profilePanelHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.profilePanelAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7eb8c9 0%, #4a7b90 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profilePanelHeader h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #154c60;
+}
+
+.profilePanelHeader p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #7a8b94;
+}
+
+.profilePanelBody {
+  flex: 1;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.profileSection {
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.35);
+  border-radius: 12px;
+  background: #f7fafb;
+}
+
+.profileSection h5 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #2f6277;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profileSection p {
+  margin: 0;
+  font-size: 13px;
+  color: #4a5c66;
+  line-height: 1.5;
+}
+
+.profileScoreRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.profileScoreRow + .profileScoreRow {
+  border-top: 1px solid rgba(192, 199, 204, 0.25);
+}
+
+.profileScoreRow span {
+  color: #7a8b94;
+}
+
+.profileScoreRow strong {
+  color: #154c60;
+}
+
+/* EMR Form */
+.emrPanel {
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.emrHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.emrHeader h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #154c60;
+}
+
+.emrHeader p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #7a8b94;
+}
+
+.emrBody {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.emrGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.emrField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emrField span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7a8b94;
+}
+
+.emrField input,
+.emrField select,
+.emrField textarea {
+  width: 100%;
+  border: 1px solid rgba(192, 199, 204, 0.7);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.emrField textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.emrField input:focus,
+.emrField select:focus,
+.emrField textarea:focus {
+  outline: none;
+  border-color: rgba(47, 98, 119, 0.4);
+}
+
+.emrActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Schedule Management */
+.scheduleLayout {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+.scheduleCalendar {
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.calendarHeader h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #154c60;
+}
+
+.calendarNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendarNav button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(192, 199, 204, 0.6);
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.calendarNav button:hover {
+  border-color: rgba(47, 98, 119, 0.4);
+  background: #f7fafb;
+}
+
+.calendarNav span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #154c60;
+  min-width: 90px;
+  text-align: center;
+}
+
+.calendarGrid {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 16px 20px;
+}
+
+.calendarDayHeader {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7a8b94;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.calendarDay {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 199, 204, 0.35);
+  background: #f7fafb;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #2f4350;
+  position: relative;
+}
+
+.calendarDay:hover {
+  border-color: rgba(47, 98, 119, 0.3);
+  background: #fff;
+}
+
+.calendarDayActive {
+  background: rgba(185, 233, 255, 0.25);
+  border-color: rgba(47, 98, 119, 0.4);
+  font-weight: 600;
+  color: #154c60;
+}
+
+.calendarDayMuted {
+  color: #c0c7cc;
+  cursor: default;
+}
+
+.calendarDayDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #5a9e6f;
+  position: absolute;
+  bottom: 5px;
+}
+
+.slotSection {
+  padding: 0 20px 18px;
+}
+
+.slotSection h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #154c60;
+}
+
+.slotGrid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.slotChip {
+  padding: 8px 6px;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.slotChip:hover {
+  border-color: rgba(47, 98, 119, 0.3);
+  background: #f7fafb;
+}
+
+.slotChipActive {
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Pricing */
+.pricingPanel {
+  background: #fff;
+  border: 1px solid rgba(192, 199, 204, 0.5);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pricingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(192, 199, 204, 0.3);
+  background: linear-gradient(135deg, #f0f7f9 0%, #f7fafb 100%);
+}
+
+.pricingHeader h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #154c60;
+}
+
+.pricingBody {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pricingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.4);
+  border-radius: 12px;
+  background: #f7fafb;
+}
+
+.pricingItem strong {
+  font-size: 14px;
+  color: #154c60;
+  display: block;
+}
+
+.pricingItem span {
+  font-size: 12px;
+  color: #7a8b94;
+}
+
+.priceInput {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.priceInput span {
+  font-size: 14px;
+  color: #7a8b94;
+}
+
+.priceInput input {
+  width: 80px;
+  text-align: right;
+  border: 1px solid rgba(192, 199, 204, 0.7);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #154c60;
+}
+
+.priceInput input:focus {
+  outline: none;
+  border-color: rgba(47, 98, 119, 0.4);
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.profileFormActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.submitHint {
+  margin: 0;
+  color: #59676d;
+  font-size: 13px;
+}

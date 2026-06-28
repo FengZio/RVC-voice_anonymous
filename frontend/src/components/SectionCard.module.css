@@ -1,0 +1,48 @@
+.card {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(47, 49, 48, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.headingBlock {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.description {
+  margin: 6px 0 0;
+  color: #59676d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.icon {
+  color: #2f6277;
+}
+
+.body {
+  min-width: 0;
+}

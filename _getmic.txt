@@ -1,0 +1,19 @@
+  const getMic = useCallback(async () => {
+    if (localStreamRef.current) return localStreamRef.current;
+    var localStream;
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      if (!mountedRef.current) return null;
+      if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        setError('未检测到麦克风设备，无法发起通话');
+      } else if (err.name === 'NotAllowedError') {
+        setError('麦克风权限被拒绝，请在浏览器设置中允许');
+      } else {
+        setError('获取麦克风失败：' + err.message);
+      }
+      return null;
+    }
+    if (!mountedRef.current) { localStream.getTracks().forEach(function(t) { t.stop(); }); return null; }
+    if (onLocalStream) { try { localStream = await onLocalStream(localStream); } catch (_) {} }
+    rawStreamRef.current = localStream;

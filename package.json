@@ -1,0 +1,51 @@
+{
+  "name": "rvc-voice-anonymous",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "api": "python backend_api.py",
+    "desktop": "electron .",
+    "desktop:dev": "cross-env RVC_FRONTEND_DEV_URL=http://127.0.0.1:5173 electron .",
+    "dist": "npm run build && electron-builder --win portable"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "local.rvc.voiceanonymous",
+    "productName": "RVC Voice Anonymous",
+    "files": [
+      "desktop/**",
+      "frontend/dist/**",
+      "backend_api.py",
+      "src/**",
+      "models/rvc/.gitkeep",
+      "requirements.txt",
+      "README.md"
+    ],
+    "extraResources": [
+      {
+        "from": "models",
+        "to": "models"
+      }
+    ],
+    "win": {
+      "target": "portable"
+    }
+  }
+}
+

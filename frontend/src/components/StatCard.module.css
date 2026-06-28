@@ -1,0 +1,39 @@
+.card {
+  min-width: 0;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(47, 49, 48, 0.04);
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.label {
+  color: #59676d;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.iconWrap {
+  color: #2f6277;
+}
+
+.value {
+  display: block;
+  margin-top: 8px;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.hint {
+  margin: 6px 0 0;
+  color: #59676d;
+  font-size: 13px;
+  line-height: 1.5;
+}

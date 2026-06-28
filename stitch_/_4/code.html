@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>评估中心 | SerenePath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#bde9ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e0",
+                        "on-tertiary-fixed": "#321201",
+                        "on-primary-fixed-variant": "#154c60",
+                        "on-background": "#1a1c1b",
+                        "error-container": "#ffdad6",
+                        "secondary": "#44664e",
+                        "secondary-fixed": "#c6eccd",
+                        "on-surface-variant": "#41484c",
+                        "on-tertiary-container": "#fffbff",
+                        "primary": "#2f6277",
+                        "on-surface": "#1a1c1b",
+                        "secondary-fixed-dim": "#abcfb2",
+                        "tertiary": "#7f5137",
+                        "outline-variant": "#c0c7cc",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#9ccee5",
+                        "surface": "#faf9f7",
+                        "on-secondary-fixed": "#00210f",
+                        "surface-container": "#efeeec",
+                        "on-tertiary-fixed-variant": "#673c24",
+                        "inverse-surface": "#2f3130",
+                        "primary-fixed-dim": "#9ccee5",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-secondary-fixed-variant": "#2d4e37",
+                        "surface-dim": "#dadad8",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-tint": "#326479",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001f2a",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#faf9f7",
+                        "outline": "#71787c",
+                        "surface-container-high": "#e9e8e6",
+                        "on-primary-container": "#fbfdff",
+                        "tertiary-fixed-dim": "#f7b999",
+                        "surface-bright": "#faf9f7",
+                        "on-secondary-container": "#4a6c54",
+                        "secondary-container": "#c6eccd",
+                        "primary-container": "#4a7b90",
+                        "surface-container-low": "#f4f3f1",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#9b694e",
+                        "surface-variant": "#e3e2e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "display": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #faf9f7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .ambient-tonal-shadow {
+            box-shadow: 0 20px 40px -10px rgba(47, 98, 119, 0.08);
+        }
+
+        .breath-animation {
+            animation: breath 4s ease-in-out infinite;
+        }
+
+        @keyframes breath {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+        }
+
+        .nav-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-on-surface bg-background min-h-screen">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl shadow-sm dark:shadow-none transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center px-gutter h-16 w-full max-w-container-max mx-auto">
+<div class="font-display text-headline-md font-bold text-primary dark:text-primary-fixed">SerenePath</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="nav-transition font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">首页</a>
+<a class="nav-transition font-label-md text-label-md text-primary border-b-2 border-primary transition-colors" href="#">评估</a>
+<a class="nav-transition font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">记录</a>
+<a class="nav-transition font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">个人资料</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional, warm studio portrait of a woman in her 30s with a kind expression, softly lit with natural morning light. The background is a clean, minimalist interior with warm neutral tones, reflecting a peaceful and supportive environment. High resolution, professional photography style, soft focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAnL_0xQ3u5mleMK4moI-7pUs7HSIHcVW-lm1Q8hPSwHt9LjHjVvVJEfui0zBPRWFEpy1kq0PN5VJHzKgOOenh-POe7ep3hyeW2sfSqbp4hSs6G_tGeR0rhBBXdtLiGNLkTMaqCWQFRTSduaUlDw64Cj7IXtDeMhCF-Y_CEhcIQf-NWq3mTXJiblwW5WN9sxIjWfCQ_4ejdaw1-Gqtf-mJRKlyn8mzNyIlpE1RpEX2CBFYKLQ2HAQgkQ_hPpe9GwY_sYZOk7NjxEM"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-24 pb-32 px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<!-- Header & Welcome -->
+<header class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">评估中心</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">了解自己是迈向康复的第一步。完成这些经过临床验证的量表，以监测您的情绪健康状况。</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-secondary-container px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md text-on-secondary-container">每周进度同步中</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Recommended Section (Hero Pattern) -->
+<section class="mb-16">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="recommend">recommend</span>
+            为您推荐
+        </h2>
+<div class="relative overflow-hidden rounded-[32px] bg-primary-container p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 ambient-tonal-shadow">
+<!-- Background Pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full breath-animation"></div>
+</div>
+<div class="flex-1 z-10">
+<div class="bg-white/20 backdrop-blur-md inline-block px-3 py-1 rounded-full mb-4">
+<span class="font-label-sm text-label-sm text-white uppercase tracking-wider">根据您最近的签到</span>
+</div>
+<h3 class="font-display text-4xl font-bold text-white mb-4">每日心理韧性自测</h3>
+<p class="font-body-lg text-white/90 mb-8 max-w-lg">这组5分钟的自测可帮助追踪您的日常习惯如何影响情绪调节。非常适合加入您的早间例行习惯。</p>
+<div class="flex flex-wrap gap-6 text-white/80 mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-md text-label-md">5 分钟</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-label-md text-label-md">10 道题</span>
+</div>
+</div>
+<button class="bg-white text-primary px-8 py-3 rounded-full font-bold hover:shadow-lg transition-all active:scale-95">
+                    开始评估
+                </button>
+</div>
+<div class="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden shadow-2xl z-10 rotate-3">
+<img class="w-full h-full object-cover" data-alt="A serene and calming digital artwork showing soft, flowing silk-like fabrics in shades of sage green, teal, and soft clay. The lighting is diffused and ethereal, creating a sense of psychological safety and professional warmth. The composition is minimalist and organic, echoing the SerenePath brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv_8zi5Yoqw1DO8rGqsVlLXv-lJCtRdPLqMvuhIdsLt5wDr4cUqPo4xezPHEw1TK0-nbHnaJEi3gTjmH695Uz2_-GuasQNmX0-gkRKpwjC4sjfvi88UKsAtT4YGsYDiiyFcSjdKHBxBwXYdLynFGnqbwmL_apYZm7PzxYSEHHrfCJmLhCyV6Gzq89FHHG8pcXeIzQkg0lkassnmc4f_xVazb0NdoXxn4B4lyiIbMjrF844Uv61M_TObGb_f-S4CxHbBwZZ47v98CU"/>
+</div>
+</div>
+</section>
+<!-- Main Assessment Grid -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">心理量表</h2>
+<div class="flex items-center bg-surface-container-high rounded-full p-1">
+<button class="px-4 py-1.5 rounded-full bg-white text-primary text-sm font-semibold shadow-sm">全部</button>
+<button class="px-4 py-1.5 rounded-full text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">情绪</button>
+<button class="px-4 py-1.5 rounded-full text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">焦虑</button>
+<button class="px-4 py-1.5 rounded-full text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">专注度</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- GAD-7 -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-surface-container hover:border-primary/20 transition-all group ambient-tonal-shadow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-primary-fixed-dim/30 rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<span class="bg-secondary-container/50 text-on-secondary-container px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest">权威验证</span>
+</div>
+<h3 class="font-headline-md text-lg text-on-surface mb-2">GAD-7 广泛性焦虑量表</h3>
+<p class="font-body-md text-on-surface-variant mb-6 line-clamp-2">专业人士使用的标准化评估工具，用于筛查广泛性焦虑障碍。</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container">
+<div class="flex items-center gap-4 text-on-surface-variant/70">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs font-medium">3分钟</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-xs font-medium">7 道题</span>
+</div>
+</div>
+<button class="text-primary font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center">
+                        开始 <span class="material-symbols-outlined text-sm ml-1" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- PHQ-9 -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-surface-container hover:border-primary/20 transition-all group ambient-tonal-shadow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-secondary-fixed/40 rounded-2xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="sentiment_dissatisfied">sentiment_dissatisfied</span>
+</div>
+</div>
+<h3 class="font-headline-md text-lg text-on-surface mb-2">PHQ-9 抑郁症筛查量表</h3>
+<p class="font-body-md text-on-surface-variant mb-6 line-clamp-2">使用此验证工具监测过去两周内抑郁症状的表现及严重程度。</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container">
+<div class="flex items-center gap-4 text-on-surface-variant/70">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs font-medium">5分钟</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-xs font-medium">9 道题</span>
+</div>
+</div>
+<button class="text-primary font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center">
+                        开始 <span class="material-symbols-outlined text-sm ml-1" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Stress Scale -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-surface-container hover:border-primary/20 transition-all group ambient-tonal-shadow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-tertiary-fixed-dim/30 rounded-2xl flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="self_improvement">self_improvement</span>
+</div>
+</div>
+<h3 class="font-headline-md text-lg text-on-surface mb-2">PSS 知觉压力量表</h3>
+<p class="font-body-md text-on-surface-variant mb-6 line-clamp-2">衡量您最近感到生活中的各个方面有多么不可预测或无法控制。</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container">
+<div class="flex items-center gap-4 text-on-surface-variant/70">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs font-medium">4分钟</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-xs font-medium">10 道题</span>
+</div>
+</div>
+<button class="text-primary font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center">
+                        开始 <span class="material-symbols-outlined text-sm ml-1" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Sleep Quality -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-surface-container hover:border-primary/20 transition-all group ambient-tonal-shadow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-primary-fixed/50 rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="bedtime">bedtime</span>
+</div>
+</div>
+<h3 class="font-headline-md text-lg text-on-surface mb-2">SHI 睡眠卫生指数</h3>
+<p class="font-body-md text-on-surface-variant mb-6 line-clamp-2">探索您的睡眠习惯与整体情绪稳定性和能量水平之间的相关性。</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container">
+<div class="flex items-center gap-4 text-on-surface-variant/70">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs font-medium">6分钟</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-xs font-medium">13 道题</span>
+</div>
+</div>
+<button class="text-primary font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center">
+                        开始 <span class="material-symbols-outlined text-sm ml-1" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Social Anxiety -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-surface-container hover:border-primary/20 transition-all group ambient-tonal-shadow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-secondary-fixed/40 rounded-2xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+</div>
+</div>
+<h3 class="font-headline-md text-lg text-on-surface mb-2">LSAS 社交焦虑量表</h3>
+<p class="font-body-md text-on-surface-variant mb-6 line-clamp-2">评估社交互动和表现场合如何影响您的心理舒适度。</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container">
+<div class="flex items-center gap-4 text-on-surface-variant/70">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs font-medium">8分钟</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-xs font-medium">24 道题</span>
+</div>
+</div>
+<button class="text-primary font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center">
+                        开始 <span class="material-symbols-outlined text-sm ml-1" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Empty State / Suggestion -->
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant p-6 rounded-[24px] flex flex-col items-center justify-center text-center group transition-colors hover:bg-surface-container">
+<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center mb-4 group-hover:bg-primary-container group-hover:text-white transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<h3 class="font-headline-md text-sm text-on-surface mb-1">建议新工具</h3>
+<p class="font-label-md text-xs text-on-surface-variant">有遗漏的工具吗？告诉我们您想追踪的内容。</p>
+</div>
+</div>
+</section>
+<!-- Informational / Trust Section -->
+<section class="bg-surface-container rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8">
+<div class="flex-1">
+<h3 class="font-headline-md text-on-surface mb-4">您的隐私是我们的基石</h3>
+<p class="font-body-md text-on-surface-variant mb-6">所有评估结果均经过加密，仅供您和您的执业临床医生查看。SerenePath 绝不会出售您的心理健康数据。</p>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="verified_user">verified_user</span>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">符合 HIPAA 标准</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="lock">lock</span>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">端到端加密</span>
+</div>
+</div>
+</div>
+<div class="hidden md:block w-48 h-32">
+<div class="w-full h-full relative">
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-2xl"></div>
+<div class="relative flex items-center justify-center h-full">
+<span class="material-symbols-outlined text-6xl text-primary/30" data-icon="shield">shield</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-surface-dim flex justify-around items-center px-margin-mobile pb-4 pt-2 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-sm text-label-sm">评估</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="font-label-sm text-label-sm">记录</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">资料</span>
+</button>
+</nav>
+<script>
+    // Micro-interactions for card hover effects
+    document.querySelectorAll('.group').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Sticky header behavior
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.style.top = '-80px';
+        } else {
+            navbar.style.top = '0';
+        }
+        lastScrollTop = scrollTop;
+    });
+</script>
+</body></html>

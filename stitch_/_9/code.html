@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath | 患者沟通</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#7f5137",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeeec",
+                        "secondary-fixed": "#c6eccd",
+                        "inverse-surface": "#2f3130",
+                        "on-surface-variant": "#41484c",
+                        "surface-variant": "#e3e2e0",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#4a7b90",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#faf9f7",
+                        "surface-container-highest": "#e3e2e0",
+                        "tertiary-container": "#9b694e",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dadad8",
+                        "background": "#faf9f7",
+                        "outline": "#71787c",
+                        "outline-variant": "#c0c7cc",
+                        "on-secondary-container": "#4a6c54",
+                        "secondary-fixed-dim": "#abcfb2",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f4f3f1",
+                        "primary": "#2f6277",
+                        "secondary": "#44664e",
+                        "surface-container-high": "#e9e8e6",
+                        "on-tertiary-fixed": "#321201",
+                        "on-secondary-fixed": "#00210f",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#f7b999",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-primary": "#9ccee5",
+                        "surface-tint": "#326479",
+                        "on-surface": "#1a1c1b",
+                        "on-primary-fixed-variant": "#154c60",
+                        "on-primary-container": "#fbfdff",
+                        "primary-fixed": "#bde9ff",
+                        "on-secondary-fixed-variant": "#2d4e37",
+                        "inverse-on-surface": "#f1f1ef",
+                        "primary-fixed-dim": "#9ccee5",
+                        "on-tertiary-fixed-variant": "#673c24",
+                        "secondary-container": "#c6eccd",
+                        "surface": "#faf9f7",
+                        "on-background": "#1a1c1b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#001f2a",
+                        "tertiary-fixed": "#ffdbca"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "margin-desktop": "40px",
+                        "unit": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "display": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "body-md": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "body-lg": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "label-md": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "headline-lg": ["Manrope", "PingFang SC", "Microsoft YaHei"],
+                        "label-sm": ["Manrope", "PingFang SC", "Microsoft YaHei"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-bubble-patient {
+            border-radius: 18px 18px 18px 4px;
+        }
+        .chat-bubble-doctor {
+            border-radius: 18px 18px 4px 18px;
+        }
+        .breath-animation {
+            animation: breath 4s ease-in-out infinite;
+        }
+        @keyframes breath {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.15); opacity: 0.4; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c0c7cc; }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background overflow-hidden h-screen flex flex-col">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface-bright/80 shadow-sm flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-primary">SerenePath</span>
+<div class="h-6 w-px bg-outline-variant/30 hidden md:block"></div>
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-secondary-container/50 rounded-full">
+<span class="w-2 h-2 rounded-full bg-secondary breath-animation"></span>
+<span class="text-label-sm font-label-sm text-on-secondary-container">加密会话</span>
+</div>
+</div>
+<!-- Active Call Bar Integration -->
+<div class="flex items-center bg-surface-container-high rounded-full px-4 py-1.5 gap-6 shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="患者头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAioMg3Z1gp5KdwXSEGNKH8TMudJsQwO-ojpF1YmgJshYTC4NOk-LWTS8L9Ky2nq43Xi2KRBhFET8V7ztFKO9TyzrT5AykHPi7wTQpMOqFnzMeUyuiIK-n0aeGMgtS2s4iQr8Qmy8-WNV5DbXCQt9kpIHnHJfmGqBu2feU-kaCsYD5iBVw54wIXbCRJjy7ZdrrmV7Eyfrr41ZdS3tuQbIjgVpik3jprWdnyDbQFabH4BXoQsiXbIJ8OcXIEf2YJJrjpprUZrd4y-Nw"/>
+<div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-secondary rounded-full border-2 border-surface-bright"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md leading-none">埃琳娜·罗西</span>
+<span class="text-[10px] text-on-surface-variant font-medium">08:42</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</button>
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</button>
+<button class="ml-2 px-4 py-1.5 bg-error text-on-error rounded-full text-label-sm font-label-sm active:scale-95 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">call_end</span>
+                    结束通话
+                </button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 transition-colors rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-full overflow-hidden">
+<!-- Left Sidebar: Patient Brief -->
+<aside class="w-72 bg-surface-container-low flex flex-col border-r border-outline-variant/20 hidden lg:flex">
+<div class="p-6 border-b border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">今日待诊</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">filter_list</span>
+</div>
+<div class="space-y-3">
+<!-- Active Patient -->
+<div class="bg-secondary-container text-on-secondary-container p-3 rounded-xl flex gap-3 items-center cursor-pointer transition-all">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="埃琳娜·罗西头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZtS7LSYDaWtr3TPYrTkBC2vReHOy9KNULo4Ayf11gL27r63yirUpOnjnWllG0mmLM7IFFZWC7SVxdNBn0S2FcRPbbTjch9c5fsw9SvYMmC2mFffOIOpPNAQH8ZoWvm33jLe6Ja9Bvwodl0QYgQSbg_tOlnkyxHA9JI29zVi4JKgwdEy5DBmtSPYCViEGSG9Efc2zZd6O5qc-6ceT-VrP2E46yXiv7V-F9ML8uzP0jHQfwoIu5iiPSVYv9H3mFOhh6eg5aQU1RrA"/>
+<div class="flex-1 overflow-hidden">
+<p class="font-label-md text-label-md truncate">埃琳娜·罗西</p>
+<p class="text-[11px] opacity-80 truncate italic">“我感觉好些了...”</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+</div>
+<!-- Other Patients -->
+<div class="hover:bg-surface-container-high p-3 rounded-xl flex gap-3 items-center cursor-pointer transition-all">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="马库斯·陈头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDS3BTz4X_2BEYSmmv4ZxRGw_RnqblunLHx3Bksf2iYjLO9l8bDyGkAcWlQHQ5IcOUpw1nn9wA3tbB8e9hBx-wNBjRXLD66q5BSfeNGjqJ1aAcvaTDyGTpydVYuSzBbtteunenX9OrMkoeOXH2L-rhXjOoQsd-5YR56gXjmUd5Py4e9vT33KevVMTDmqSYss_qCgfDAFeaYHt2ZD1D6teiMFW2agaDFzwjXLVpLiJQMLQKEyl9EO9khUP1tpHha03jA4iTYKYMyeZQ"/>
+<div class="flex-1 overflow-hidden">
+<p class="font-label-md text-label-md text-on-surface truncate">马库斯·陈</p>
+<p class="text-[11px] text-on-surface-variant truncate">随访 • 下午 2:00</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 p-6 overflow-y-auto">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-4">患者简报</h3>
+<div class="space-y-4">
+<div class="bg-surface-container p-4 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-1">主要症状</p>
+<p class="text-body-md font-medium text-on-surface">广泛性焦虑症</p>
+</div>
+<div class="bg-surface-container p-4 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-1">疗程进度</p>
+<p class="text-body-md font-medium text-on-surface">第 12 次 / 共 20 次 (周诊)</p>
+</div>
+<div class="bg-surface-container p-4 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-1">上次干预</p>
+<p class="text-body-md font-medium text-on-surface italic">CBT 思维日记</p>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/20">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-label-md text-label-md shadow-sm active:scale-95 transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    新建疗程
+                </button>
+</div>
+</aside>
+<!-- Main Content: Chat Interface -->
+<main class="flex-1 flex flex-col relative bg-surface-bright">
+<!-- Chat Scrollable Area -->
+<div class="flex-1 overflow-y-auto px-6 py-8 space-y-6" id="chat-container">
+<!-- Timestamp -->
+<div class="flex justify-center">
+<span class="px-3 py-1 bg-surface-container rounded-full text-label-sm text-on-surface-variant">今天, 上午 10:30</span>
+</div>
+<!-- Patient Message -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<img class="w-8 h-8 rounded-full mb-1" data-alt="患者头像小图" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA46LrsGE_sCVZLQ2x9abaDuR_0WgTln0G1NZscILzAsnfsMhrHnXCvdOOxoquSo27V82-iOnp2Al2DdxSNpHDwJASSBeLVn4zVyrD14ikiOv6o9-VTOYIBWm9FCa9ywzf3u8O39Hq2OXMXbj50vQLS8Trp9pSgh1lXo2uWMlIceP5ryiv6TAx0egHeqzK9IhNGFiQoETb5gU3FspgSt6yVc_jRfPrKJ_49R3cjZyOqm4nV5r-1Joc5OgQvi_YZd6AsDUs286AJpoI"/>
+<div>
+<div class="chat-bubble-patient bg-secondary-container text-on-secondary-container px-4 py-3 shadow-sm">
+<p class="text-body-md">早上好，范斯医生。我一直在练习我们讨论过的呼吸法。我感觉在工作会议期间，胸口的压迫感稍微减轻了一些。</p>
+</div>
+<span class="text-[10px] text-on-surface-variant ml-1 mt-1 block">10:32 AM</span>
+</div>
+</div>
+<!-- Doctor Message -->
+<div class="flex items-end gap-3 max-w-[80%] ml-auto flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px] mb-1">JV</div>
+<div class="flex flex-col items-end">
+<div class="chat-bubble-doctor bg-primary text-on-primary px-4 py-3 shadow-md">
+<p class="text-body-md">听到这个消息太棒了，埃琳娜。意识到身体上的转变是重要的一步。你有没有注意到是什么具体的想法触发了需要练习呼吸法的时刻？</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mr-1 mt-1 block">10:35 AM • 已读</span>
+</div>
+</div>
+<!-- Patient Message -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<img class="w-8 h-8 rounded-full mb-1" data-alt="埃琳娜·罗西头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_SETMoHVVvmYC90JBcLDriTO653EuwnewNy195gLH44DOlYXH09k30eyeJaodunkdZlaVVt5YjiroGDxZmlZL6RC3WGdKhHhrHoYiWvULN14XNq-nOZmJ81uVJoQESxnnyczRPvh-yi43OjQmx-SA1Arjg93l4-5fzzFmXVSFzRe-Hdeo9AhuvAhinrOmbzQzw7wSKdCJ79HPZ__pvVo6UTQXraBCrUcET2L5_E4oh0dyeH6OtsbczUGiqAR01QVsR_slV5k3sO8"/>
+<div>
+<div class="chat-bubble-patient bg-secondary-container text-on-secondary-container px-4 py-3 shadow-sm">
+<p class="text-body-md">主要是当我的主管开始谈论第四季度的业绩目标时。我感到胃里有一种瞬间下坠的感觉。但 4-7-8 呼吸法能帮我保持专注，而不是陷入焦虑的循环。</p>
+</div>
+<span class="text-[10px] text-on-surface-variant ml-1 mt-1 block">10:37 AM</span>
+</div>
+</div>
+<!-- Audio Message Placeholder -->
+<div class="flex items-end gap-3 max-w-[80%] ml-auto flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px] mb-1">JV</div>
+<div class="flex flex-col items-end">
+<div class="chat-bubble-doctor bg-primary-container text-on-primary-container p-3 shadow-md flex items-center gap-3 w-64">
+<button class="w-8 h-8 rounded-full bg-on-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+</button>
+<div class="flex-1 h-1 bg-on-primary-container/20 rounded-full overflow-hidden relative">
+<div class="absolute inset-y-0 left-0 w-1/3 bg-on-primary-container rounded-full"></div>
+</div>
+<span class="text-label-sm">0:14</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chat Input Area -->
+<div class="p-6 bg-surface-bright/95 backdrop-blur-md border-t border-outline-variant/10">
+<div class="max-w-4xl mx-auto space-y-4">
+<!-- Quick Responses -->
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="px-4 py-1.5 bg-surface-container-high rounded-full text-label-sm text-on-surface hover:bg-surface-variant transition-colors whitespace-nowrap">“再多跟我说说那个。”</button>
+<button class="px-4 py-1.5 bg-surface-container-high rounded-full text-label-sm text-on-surface hover:bg-surface-variant transition-colors whitespace-nowrap">“那让你感觉如何？”</button>
+<button class="px-4 py-1.5 bg-surface-container-high rounded-full text-label-sm text-on-surface hover:bg-surface-variant transition-colors whitespace-nowrap">“我会一直支持你。”</button>
+<button class="px-4 py-1.5 bg-surface-container-high rounded-full text-label-sm text-on-surface hover:bg-surface-variant transition-colors whitespace-nowrap">“让我们探讨一下那个触发因素。”</button>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-2 shadow-sm border border-outline-variant/20 flex flex-col">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-body-md p-3 resize-none h-24 placeholder:text-on-surface-variant/50" placeholder="在此输入您的观察或回应..."></textarea>
+<div class="flex items-center justify-between px-2 pb-2">
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors"><span class="material-symbols-outlined">attachment</span></button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors"><span class="material-symbols-outlined">mic</span></button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors"><span class="material-symbols-outlined">mood</span></button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors"><span class="material-symbols-outlined">text_fields</span></button>
+</div>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-xl font-label-md text-label-md flex items-center gap-2 active:scale-95 transition-all">
+                                发送
+                                <span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar: Session Context -->
+<aside class="w-80 bg-surface-container-low border-l border-outline-variant/20 flex flex-col hidden xl:flex">
+<div class="p-6">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-6">患者健康指标</h3>
+<div class="space-y-6">
+<!-- Anxiety Score Card -->
+<div class="bg-surface-bright rounded-2xl p-4 shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center mb-4">
+<span class="text-label-md font-label-md">GAD-7 (焦虑)</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded text-[10px] font-bold">中度</span>
+</div>
+<div class="relative h-24 flex items-end justify-between gap-1 px-2">
+<!-- Simple Bar Chart Representation -->
+<div class="flex-1 bg-surface-variant/30 rounded-t-sm h-[40%]"></div>
+<div class="flex-1 bg-surface-variant/30 rounded-t-sm h-[60%]"></div>
+<div class="flex-1 bg-surface-variant/30 rounded-t-sm h-[55%]"></div>
+<div class="flex-1 bg-primary/60 rounded-t-sm h-[75%]"></div>
+<div class="flex-1 bg-primary rounded-t-sm h-[45%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-on-surface-variant">
+<span>上月</span>
+<span>今日</span>
+</div>
+</div>
+<!-- Depression Score Card -->
+<div class="bg-surface-bright rounded-2xl p-4 shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-md font-label-md">PHQ-9 (抑郁)</span>
+<span class="text-headline-md font-bold text-primary">8</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">轻度。较上次疗程的 14 分有所下降。观察到积极趋势。</p>
+</div>
+<div class="h-px bg-outline-variant/30"></div>
+<!-- Quick Notes -->
+<div class="flex flex-col flex-1">
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">疗程笔记</h3>
+<button class="text-primary text-[11px] font-bold hover:underline">查看历史</button>
+</div>
+<div class="bg-surface-container p-4 rounded-2xl border border-dashed border-outline-variant/50 min-h-[200px]">
+<ul class="text-body-md space-y-3 list-disc list-inside text-on-surface-variant">
+<li>工作压力仍是焦虑的主要诱因。</li>
+<li>本周成功运用了两次 4-7-8 呼吸法。</li>
+<li>表达了下次想讨论睡眠卫生的意愿。</li>
+<li class="text-primary/50 italic">输入以添加新观察...</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-6 bg-surface-container-high/50">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-label-sm text-on-surface-variant italic">符合 HIPAA 标准的安全频道。</p>
+</div>
+<button class="w-full py-2 border border-primary text-primary rounded-xl font-label-md text-label-md hover:bg-primary/5 transition-colors">
+                    分享评估
+                </button>
+</div>
+</aside>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        // Auto-scroll to bottom of chat on load
+        window.onload = () => {
+            const chat = document.getElementById('chat-container');
+            chat.scrollTop = chat.scrollHeight;
+        };
+
+        // Simulating message sent interaction
+        document.querySelector('button.bg-primary.text-on-primary.px-6').addEventListener('click', function() {
+            const textarea = document.querySelector('textarea');
+            if (textarea.value.trim() !== "") {
+                const chatContainer = document.getElementById('chat-container');
+                const newMsg = document.createElement('div');
+                newMsg.className = "flex items-end gap-3 max-w-[80%] ml-auto flex-row-reverse animate-in fade-in slide-in-from-right-2 duration-300";
+                newMsg.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px] mb-1">JV</div>
+                    <div class="flex flex-col items-end">
+                        <div class="chat-bubble-doctor bg-primary text-on-primary px-4 py-3 shadow-md">
+                            <p class="text-body-md">${textarea.value}</p>
+                        </div>
+                        <span class="text-[10px] text-on-surface-variant mr-1 mt-1 block">刚刚 • 正在发送...</span>
+                    </div>
+                `;
+                chatContainer.appendChild(newMsg);
+                textarea.value = "";
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Simulate "Sent" status change
+                setTimeout(() => {
+                    newMsg.querySelector('span').textContent = "刚刚 • 已发送";
+                }, 1000);
+            }
+        });
+    </script>
+</body></html>

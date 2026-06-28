@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath | 安全在线咨询</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#bde9ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e0",
+                    "on-tertiary-fixed": "#321201",
+                    "on-primary-fixed-variant": "#154c60",
+                    "on-background": "#1a1c1b",
+                    "error-container": "#ffdad6",
+                    "secondary": "#44664e",
+                    "secondary-fixed": "#c6eccd",
+                    "on-surface-variant": "#41484c",
+                    "on-tertiary-container": "#fffbff",
+                    "primary": "#2f6277",
+                    "on-surface": "#1a1c1b",
+                    "secondary-fixed-dim": "#abcfb2",
+                    "tertiary": "#7f5137",
+                    "outline-variant": "#c0c7cc",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#9ccee5",
+                    "surface": "#faf9f7",
+                    "on-secondary-fixed": "#00210f",
+                    "surface-container": "#efeeec",
+                    "on-tertiary-fixed-variant": "#673c24",
+                    "inverse-surface": "#2f3130",
+                    "primary-fixed-dim": "#9ccee5",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-secondary-fixed-variant": "#2d4e37",
+                    "surface-dim": "#dadad8",
+                    "tertiary-fixed": "#ffdbca",
+                    "surface-tint": "#326479",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001f2a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#faf9f7",
+                    "outline": "#71787c",
+                    "surface-container-high": "#e9e8e6",
+                    "on-primary-container": "#fbfdff",
+                    "tertiary-fixed-dim": "#f7b999",
+                    "surface-bright": "#faf9f7",
+                    "on-secondary-container": "#4a6c54",
+                    "secondary-container": "#c6eccd",
+                    "primary-container": "#4a7b90",
+                    "surface-container-low": "#f4f3f1",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#9b694e",
+                    "surface-variant": "#e3e2e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "display": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #faf9f7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-bubble-self {
+            border-radius: 18px 18px 4px 18px;
+        }
+        .chat-bubble-other {
+            border-radius: 18px 18px 18px 4px;
+        }
+        .breath-animation {
+            animation: breath 4s ease-in-out infinite;
+        }
+        @keyframes breath {
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.4); opacity: 0.3; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e3e2e0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation (Shell Implementation) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-sm h-16">
+<div class="flex justify-between items-center px-gutter h-full w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<span class="font-display text-headline-md font-bold text-primary">SerenePath</span>
+<div class="hidden md:flex items-center gap-6 ml-10">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">个人主页</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary" href="#">我的咨询</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">心理测评</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-fixed overflow-hidden ring-2 ring-primary/10">
+<img class="h-full w-full object-cover" data-alt="用户头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsCJPG4_qcB9I1Wr_H9dx6hGV1fHTC3Z35-GWSG_gvvzU9VJiuSUY4uFwljsR94iDRKcQwtfGYkDixzhghQeln8Cv-BYbZrzFhWvYgzxedH5nZfIgmsJ7evMPmvwmB1DVKOjNEGkDa0ncqT7xR0Scs0q1tFaPAS1qiymEF-rQP_ozuUmKyhhqtBHlUvo1iKu6MHnCpx3aE0ekOwd9hTA9RsAua27Xl5LBu7lp6QWcFG3v4b81aV1nW7r_5MEWAI4t_uaZoUxdGAJU"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-16 pb-20 md:pb-0 h-screen flex flex-col md:flex-row max-w-container-max mx-auto px-4 md:px-gutter gap-6">
+<!-- Left Column: Chat Workspace -->
+<div class="flex-1 flex flex-col h-[calc(100vh-100px)] mt-4 bg-surface-container-lowest rounded-3xl shadow-lg shadow-primary/5 overflow-hidden border border-surface-container-high">
+<!-- Chat Header -->
+<div class="px-6 py-4 flex items-center justify-between border-b border-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="h-12 w-12 rounded-full overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_pK8lCbM1DvyxGUZbtwiGMTftsgiTmGbIlE1M_EM-pYf56JY4XesqkN-xZTYuc6rZmvNp9AAAyGY56GIC9ieHZtsXLtrTscSMrFDHi7_oN_zYl2ZgzxaXZv8KVUtH3JUUeSBD-dH5HrHxs-rE0nBAhqGDO4kO4u7ei5wwQC0ZY8HbANKtowyluan4wrHDXoYL9fNmC2-8vUHlGLXL52TOnGHCdoRoECUTVoVIPBv87RliiKxhvpM7bH8zKhRjulR9jetmU-jDytQ"/>
+</div>
+<div class="absolute bottom-0 right-0 h-3.5 w-3.5 bg-secondary border-2 border-surface-container-lowest rounded-full"></div>
+</div>
+<div>
+<h2 class="font-headline-md text-body-lg text-on-surface font-semibold">Julian Serene 医生</h2>
+<div class="flex items-center gap-2">
+<span class="text-secondary text-[10px] font-bold uppercase tracking-wider">在线</span>
+<span class="h-1 w-1 bg-outline-variant rounded-full"></span>
+<div class="flex items-center gap-1 text-on-surface-variant text-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span>
+<span>端到端加密保护</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-full font-label-md hover:opacity-90 transition-all active:scale-95" id="startCall">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+<span class="hidden sm:inline">发起语音通话</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Messages Area -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-surface/30">
+<!-- Date Separator -->
+<div class="flex justify-center">
+<span class="bg-surface-container text-on-surface-variant text-[11px] px-3 py-1 rounded-full font-medium">今天</span>
+</div>
+<!-- Message Received -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="h-8 w-8 rounded-full overflow-hidden mt-1 shrink-0">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生头像缩略图" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtMcV90r-48EgJNk0eA-UsFRIFzG4-GFYx6ScisODOwydwSOzpLtlbGlmTU6qB9CtbTnH6KCpUTrFLVBXCx19z_6qZyyZfsO5prAMZkcQrMYXKGvUOMZaJ9Vo3frsdafycjdS-teNljhqC1q-hI8hDHjQyrzQuHEIjwX05WtLkIsTPTX3MZhRlNudspdwJnkr9iVnryFZD00p3x0yU1xpRgUROZFbXXEmgWgdumWIeBLVJgblBxCE6ahm3fH1aPxFCrqy_xlaOgUE"/>
+</div>
+<div>
+<div class="chat-bubble-other bg-surface-container-high text-on-surface p-4 text-body-md shadow-sm">
+                            你好，Sarah。我查看了你上周的记录。在感到压力时，你的呼吸练习进行得怎么样？
+                        </div>
+<span class="text-[10px] text-outline ml-1 mt-1 block">上午 10:42</span>
+</div>
+</div>
+<!-- Message Sent -->
+<div class="flex justify-end gap-3">
+<div class="max-w-[85%]">
+<div class="chat-bubble-self bg-primary text-on-primary p-4 text-body-md shadow-md">
+                            你好，Julian 医生。非常有帮助！我发现 4-7-8 呼吸法在演讲前能让我感到非常踏实。
+                        </div>
+<div class="flex items-center justify-end gap-1 mt-1 mr-1">
+<span class="text-[10px] text-outline">上午 10:45</span>
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="done_all">done_all</span>
+</div>
+</div>
+</div>
+<!-- Message Received -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="h-8 w-8 rounded-full overflow-hidden mt-1 shrink-0">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生头像缩略图" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtYL_8f4bE583QniG6JzldQRrbLq7328vABca3LCdEd8HHDxA6Jpmh3SCY441Ny2EMMhuipj9pB4MUqiA6K8Nr7KdxFrBZuK4ZZkUUDjsDCyPVoBhRntEP8Q0HqnfyG9VWgkW8VoDctQBxaTBc6cvcBMN9k77rNxBL7sQKb86hJYYDNOYn8MFs9Qih2qX1eZiYoqwWUTFLmNHfFtyDLCsFs0cQUJ5Qfh0YbbJchtwbAD1aaO5gHx9o5Plk6DLrgn42LBECXThOBRk"/>
+</div>
+<div>
+<div class="chat-bubble-other bg-surface-container-high text-on-surface p-4 text-body-md shadow-sm">
+                            听到这个消息我很高兴。对于躯体技术来说，坚持是关键。今天，我想进一步探讨我们之前确定的认知模式。你现在是否处于一个舒适且私密的空间可以交谈？
+                        </div>
+<span class="text-[10px] text-outline ml-1 mt-1 block">上午 10:46</span>
+</div>
+</div>
+<!-- Typing Indicator (Simulated) -->
+<div class="flex gap-3 items-center opacity-0 transition-opacity duration-300" id="typing">
+<div class="h-8 w-8 rounded-full overflow-hidden shrink-0">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生头像缩略图" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJsbe6LuxfNDTUWKI0KuN8-h7EEg5gHwRrIBODcXivzTPKBiiIQRhv_1SVgsFUkXHXP0anArLQQ7aM2y95yXd4vM62eLbURA8TX4mEOM_l2hoVpQyjvxHHCZnXkAbX-CIRZKx_eG82pWo3kJsPIENebe9mXvkYHMLw27SssTC2H2I1dqGjenBA-KRCD9_RrAt_yOMeGC4RyVJET6kOUz8ez-7eErVJcJastX3z0gS1McZrwhCcAigdGS54zh-72BwmMfBfKBZaDoo"/>
+</div>
+<div class="bg-surface-container-high px-4 py-2 rounded-full flex gap-1 items-center">
+<div class="w-1.5 h-1.5 bg-outline rounded-full animate-bounce"></div>
+<div class="w-1.5 h-1.5 bg-outline rounded-full animate-bounce [animation-delay:0.2s]"></div>
+<div class="w-1.5 h-1.5 bg-outline rounded-full animate-bounce [animation-delay:0.4s]"></div>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="p-4 bg-surface-container-low border-t border-surface-container">
+<div class="flex items-end gap-3 bg-surface-container-lowest p-2 rounded-2xl border border-surface-container shadow-inner">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-colors">
+<span class="material-symbols-outlined" data-icon="mood">mood</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-colors">
+<span class="material-symbols-outlined" data-icon="attach_file">attach_file</span>
+</button>
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 text-body-md py-2 resize-none custom-scrollbar max-h-32" id="chatInput" placeholder="输入您的消息..." rows="1"></textarea>
+<button class="p-3 bg-primary-container text-on-primary-container rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<div class="mt-2 px-2 flex justify-between items-center">
+<p class="text-[11px] text-outline">Shift + Enter 换行</p>
+<div class="flex gap-4">
+<button class="text-[11px] font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="history_edu">history_edu</span>
+                            记录心情日记
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar -->
+<aside class="hidden lg:flex flex-col w-80 gap-6 mt-4">
+<!-- Doctor Profile Card -->
+<div class="bg-surface-container-low rounded-3xl p-6 border border-surface-container-high shadow-sm">
+<div class="flex flex-col items-center text-center">
+<div class="relative mb-4">
+<div class="h-24 w-24 rounded-full overflow-hidden ring-4 ring-surface-container-lowest shadow-md">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXb19Q6HV2Ag_QPnS1doO8Ake7nxh3g9VGLD-khVxzw774Kqc-A0ktWGn2ubel_m1VB3DqpkrIwmgU71a5OCNpUVw1CFPN3Rlhsam0nr3PZb_YLMpeOwxPCUzDRnBPgX4oep58hBOyN4US3eDpF-hpTn4xJmj1Fcuzk5drlQ7irMoPoNQWpSj2iwrzYoYx0zrCyQmv_T_HbgxKTRUgueqoROFbdq9FvhV8gNllQOeR1_qaifaNsNThTUX-XP1oN1-sPcxHrS2UiWY"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-secondary-fixed text-on-secondary-fixed-variant p-1.5 rounded-full border-2 border-surface-container-low">
+<span class="material-symbols-outlined text-[16px] block" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Julian Serene 医生</h3>
+<p class="text-on-surface-variant font-label-md">临床心理学博士 (PhD)</p>
+<div class="mt-4 flex gap-2">
+<span class="bg-primary-fixed/30 text-on-primary-fixed-variant px-3 py-1 rounded-full text-[11px] font-bold">CBT</span>
+<span class="bg-primary-fixed/30 text-on-primary-fixed-variant px-3 py-1 rounded-full text-[11px] font-bold">焦虑缓解</span>
+</div>
+</div>
+<div class="mt-6 space-y-4 border-t border-surface-container pt-6">
+<div class="flex justify-between items-center">
+<span class="text-label-sm text-outline">咨询费用</span>
+<span class="text-label-md font-bold text-on-surface">¥850/小时</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-label-sm text-outline">累计咨询</span>
+<span class="text-label-md font-bold text-on-surface">12 次</span>
+</div>
+<button class="w-full py-2.5 rounded-xl border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors">
+                        查看医生主页
+                    </button>
+</div>
+</div>
+<!-- Quick Tips Card -->
+<div class="bg-secondary-fixed/20 rounded-3xl p-6 border border-secondary-fixed/30 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 breath-animation"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<h4 class="font-label-md font-bold text-on-secondary-fixed-variant uppercase tracking-wide">温馨贴士</h4>
+</div>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="h-5 w-5 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
+<p class="text-label-md text-on-surface">确保摄像头与眼睛齐平，以便建立更好的沟通感。</p>
+</li>
+<li class="flex gap-3">
+<span class="h-5 w-5 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">2</span>
+<p class="text-label-md text-on-surface">在手边准备一杯水，让自己保持舒适的状态。</p>
+</li>
+<li class="flex gap-3">
+<span class="h-5 w-5 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">3</span>
+<p class="text-label-md text-on-surface">如果谈话内容让你感到过于强烈，请随时使用“安全词”。</p>
+</li>
+</ul>
+</div>
+</div>
+<!-- Encouragement Card -->
+<div class="bg-primary/5 rounded-3xl p-6 border border-primary/10 flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<div>
+<p class="text-label-md font-bold text-primary">你做得非常好。</p>
+<p class="text-label-sm text-on-surface-variant">坚持咨询是个人成长的关键因素。</p>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Nav for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface border-t border-surface-container flex justify-around items-center h-16 pb-2">
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-medium">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container px-5 py-1 rounded-full">
+<span class="material-symbols-outlined" data-icon="video_chat" style="font-variation-settings: 'FILL' 1;">video_chat</span>
+<span class="text-[10px] font-medium">咨询室</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="text-[10px] font-medium">档案</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium">我的</span>
+</button>
+</nav>
+<!-- Voice Call Modal (Hidden by default) -->
+<div class="fixed inset-0 z-[100] bg-inverse-surface/95 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500" id="callOverlay">
+<div class="w-full max-w-md p-8 flex flex-col items-center text-center">
+<div class="relative mb-12">
+<!-- Pulsing Rings -->
+<div class="absolute inset-0 bg-primary/20 rounded-full breath-animation"></div>
+<div class="absolute inset-0 bg-primary/10 rounded-full breath-animation [animation-delay:1s] scale-125"></div>
+<div class="relative h-40 w-40 rounded-full overflow-hidden border-4 border-primary shadow-2xl">
+<img class="h-full w-full object-cover" data-alt="Julian Serene 医生通话头像" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC84G7L1ouBweY6N6yQr9nUxxEaA31-ZU232UoLpzaNdprN2RwM_J1kAxDvA0F1ggKmgwa-eyTfaQX0t91d_gPTVzzlcJLX2p2hLfBfSVFTrEAfsZSSDk9wpYl-nLQY3-U4FNFflx0SZCcxSa1jT-Y8AhshkevB2kvs6m6np8QlLcd05CVyMFiUttPBs4dgjdDHKlqzWaglMZS9t7jdge4QcCxYBKotzyM6hjvOnT4z3R1RraELhlXTJPdUCg83yJQGQgsTTQfSAWY"/>
+</div>
+</div>
+<h2 class="text-white font-display text-headline-lg mb-2">Julian Serene 医生</h2>
+<p class="text-primary-fixed-dim font-label-md mb-12 flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+                正在语音通话中...
+            </p>
+<div class="flex gap-8">
+<button class="w-16 h-16 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all border border-white/20">
+<span class="material-symbols-outlined text-3xl" data-icon="mic_off">mic_off</span>
+</button>
+<button class="w-20 h-20 rounded-full bg-error text-on-error flex items-center justify-center hover:opacity-90 transition-all shadow-xl shadow-error/30 active:scale-95" id="endCall">
+<span class="material-symbols-outlined text-4xl" data-icon="call_end" style="font-variation-settings: 'FILL' 1;">call_end</span>
+</button>
+<button class="w-16 h-16 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all border border-white/20">
+<span class="material-symbols-outlined text-3xl" data-icon="volume_up">volume_up</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+        // Micro-interactions and UI State
+        const startCallBtn = document.getElementById('startCall');
+        const endCallBtn = document.getElementById('endCall');
+        const callOverlay = document.getElementById('callOverlay');
+        const typingIndicator = document.getElementById('typing');
+        const chatInput = document.getElementById('chatInput');
+
+        startCallBtn.addEventListener('click', () => {
+            callOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        });
+
+        endCallBtn.addEventListener('click', () => {
+            callOverlay.classList.add('opacity-0', 'pointer-events-none');
+        });
+
+        // Simulate Typing Indicator
+        setTimeout(() => {
+            typingIndicator.classList.remove('opacity-0');
+            setTimeout(() => {
+                typingIndicator.classList.add('opacity-0');
+            }, 3000);
+        }, 1500);
+
+        // Auto-expand textarea
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
+</body></html>

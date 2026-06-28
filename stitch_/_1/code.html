@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Serene 博士 - 个人资料与预约 | SerenePath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#bde9ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e0",
+                    "on-tertiary-fixed": "#321201",
+                    "on-primary-fixed-variant": "#154c60",
+                    "on-background": "#1a1c1b",
+                    "error-container": "#ffdad6",
+                    "secondary": "#44664e",
+                    "secondary-fixed": "#c6eccd",
+                    "on-surface-variant": "#41484c",
+                    "on-tertiary-container": "#fffbff",
+                    "primary": "#2f6277",
+                    "on-surface": "#1a1c1b",
+                    "secondary-fixed-dim": "#abcfb2",
+                    "tertiary": "#7f5137",
+                    "outline-variant": "#c0c7cc",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#9ccee5",
+                    "surface": "#faf9f7",
+                    "on-secondary-fixed": "#00210f",
+                    "surface-container": "#efeeec",
+                    "on-tertiary-fixed-variant": "#673c24",
+                    "inverse-surface": "#2f3130",
+                    "primary-fixed-dim": "#9ccee5",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-secondary-fixed-variant": "#2d4e37",
+                    "surface-dim": "#dadad8",
+                    "tertiary-fixed": "#ffdbca",
+                    "surface-tint": "#326479",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001f2a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#faf9f7",
+                    "outline": "#71787c",
+                    "surface-container-high": "#e9e8e6",
+                    "on-primary-container": "#fbfdff",
+                    "tertiary-fixed-dim": "#f7b999",
+                    "surface-bright": "#faf9f7",
+                    "on-secondary-container": "#4a6c54",
+                    "secondary-container": "#c6eccd",
+                    "primary-container": "#4a7b90",
+                    "surface-container-low": "#f4f3f1",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#9b694e",
+                    "surface-variant": "#e3e2e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "display": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .breath-animation {
+            animation: breath 4s ease-in-out infinite;
+        }
+        @keyframes breath {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter h-16 w-full max-w-container-max mx-auto transition-all duration-300 ease-in-out">
+<div class="font-display text-headline-md font-bold text-primary">SerenePath</div>
+<!-- Desktop Nav Items -->
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">控制面板</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary transition-colors h-full flex items-center" href="#">寻找医生</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">我的咨询</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">资源库</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Back Button & Page Title -->
+<div class="flex items-center mb-8 gap-2">
+<button class="p-2 -ml-2 rounded-full hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-primary group-active:scale-90 transition-transform">arrow_back</span>
+</button>
+<span class="font-label-md text-label-md text-primary">返回搜索结果</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Doctor Profile & Reviews -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Profile Section -->
+<section class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm relative overflow-hidden">
+<!-- Subtle Background Decoration -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary-fixed/20 rounded-full blur-3xl"></div>
+<div class="flex flex-col md:flex-row gap-8 relative z-10">
+<!-- Doctor Image -->
+<div class="relative shrink-0">
+<div class="w-40 h-40 rounded-3xl overflow-hidden shadow-lg border-4 border-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="A professional and warm portrait of a clinical psychologist in her 40s, Dr. Serene, smiling gently. She has soft features and is wearing a professional yet approachable sage green blazer. The background is a soft-focus, minimalist office with warm lighting and a hint of greenery, reflecting a serene and professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJaEzRW10ko8x_HhS1YgBYU9_vzVbunwLMb4mTovNzGsL7mJxuu2vqwDvvVJoqRMVDHEZt8nwx5EY-HRXx0zMV2idWzQJGDQlD2jWBBcy6FJAOdR_jsq_x8yV6hJNvdxux3Or9kk29n6Dh9XxPffVYCCS0j48mwuYO-zmFPMZAIUmeME2z5Qrqmov0a8lEg_2kyMqt01WIYJj4GCTdBZXra6kgK39VVWHpJ1jr-75FQLXacWhLCJzMHx6TyDTVrot277j2vc29_uA"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-sm font-label-sm flex items-center gap-1">
+<span class="w-2 h-2 bg-white rounded-full breath-animation"></span>
+                            在线
+                        </div>
+</div>
+<!-- Bio Content -->
+<div class="flex-1">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-1">Serene 博士</h1>
+<p class="font-label-md text-label-md text-tertiary mb-4">临床心理学家 • 心理学博士</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant">认知行为疗法</span>
+<span class="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant">焦虑症专家</span>
+<span class="px-3 py-1 bg-surface-container rounded-full font-label-sm text-label-sm text-on-surface-variant">压力管理</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
+                            Serene 博士擅长帮助高成就人士应对现代焦虑和职场倦怠。拥有超过 15 年的临床经验，她提倡“持有空间”疗法——一种在非评判的环境中，通过清明与慈悲开启疗愈之旅的方法。
+                        </p>
+<div class="grid grid-cols-3 gap-4 border-t border-surface-variant pt-6">
+<div class="text-center">
+<div class="text-headline-md font-display text-primary">15+</div>
+<div class="text-label-sm font-label-sm text-outline">执业年限</div>
+</div>
+<div class="text-center">
+<div class="text-headline-md font-display text-primary">4.9</div>
+<div class="text-label-sm font-label-sm text-outline">用户评分</div>
+</div>
+<div class="text-center">
+<div class="text-headline-md font-display text-primary">2k+</div>
+<div class="text-label-sm font-label-sm text-outline">咨询场次</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="space-y-4">
+<div class="flex justify-between items-center px-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">患者评价</h2>
+<button class="text-primary font-label-md text-label-md hover:underline">查看全部</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Review Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-2xl space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-xs">MA</div>
+<span class="font-label-md text-label-md font-semibold">Mark A.</span>
+</div>
+<div class="flex text-tertiary">
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+</div>
+</div>
+<p class="font-body-md text-label-md text-on-surface-variant italic">“她的咨询让我感到非常安心。多年来我第一次感觉到被真正理解。强烈推荐给正在经历倦怠的人。”</p>
+</div>
+<!-- Review Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-2xl space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">SJ</div>
+<span class="font-label-md text-label-md font-semibold">Sarah J.</span>
+</div>
+<div class="flex text-tertiary">
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base filled-icon">star</span>
+<span class="material-symbols-outlined text-base">star</span>
+</div>
+</div>
+<p class="font-body-md text-label-md text-on-surface-variant italic">“非常专业且具有共情力。SerenePath 的界面让预约即时咨询变得非常方便。”</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Booking Widget -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 space-y-6">
+<div class="bg-surface-container-high rounded-3xl p-6 shadow-xl shadow-primary/5 border border-surface-variant/30">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">选择预约时间</h3>
+<!-- Date Selection -->
+<div class="mb-8">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-md text-label-md font-bold">2024年 11月</span>
+<div class="flex gap-2">
+<button class="p-1 rounded-full hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 rounded-full hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="calendar-grid gap-2 text-center text-label-sm">
+<div class="text-outline py-2">一</div>
+<div class="text-outline py-2">二</div>
+<div class="text-outline py-2">三</div>
+<div class="text-outline py-2">四</div>
+<div class="text-outline py-2">五</div>
+<div class="text-outline py-2">六</div>
+<div class="text-outline py-2">日</div>
+<!-- Placeholder days -->
+<button class="py-2 text-outline-variant cursor-not-allowed">28</button>
+<button class="py-2 text-outline-variant cursor-not-allowed">29</button>
+<button class="py-2 text-outline-variant cursor-not-allowed">30</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">1</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">2</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">3</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">4</button>
+<button class="py-3 rounded-xl bg-primary text-on-primary font-bold shadow-md">5</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">6</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">7</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">8</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">9</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">10</button>
+<button class="py-3 rounded-xl hover:bg-primary-fixed/30 transition-colors">11</button>
+</div>
+</div>
+<!-- Time Selection -->
+<div class="mb-8">
+<span class="font-label-md text-label-md font-bold mb-4 block">可选时段</span>
+<div class="grid grid-cols-2 gap-3">
+<button class="py-3 px-4 rounded-2xl border border-outline-variant text-label-md hover:border-primary hover:text-primary transition-all active:scale-95">09:00 AM</button>
+<button class="py-3 px-4 rounded-2xl border-2 border-primary bg-primary/5 text-primary text-label-md font-bold transition-all active:scale-95">10:30 AM</button>
+<button class="py-3 px-4 rounded-2xl border border-outline-variant text-label-md hover:border-primary hover:text-primary transition-all active:scale-95">01:00 PM</button>
+<button class="py-3 px-4 rounded-2xl border border-outline-variant text-label-md hover:border-primary hover:text-primary transition-all active:scale-95">03:30 PM</button>
+</div>
+</div>
+<!-- Pricing & CTA -->
+<div class="pt-6 border-t border-surface-variant flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-label-md">咨询费用 (50 分钟)</span>
+<span class="text-headline-md font-bold text-primary">¥850</span>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary rounded-full font-headline-md text-label-md shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">立即预约</button>
+<p class="text-center text-label-sm text-outline px-4">预约开始前 24 小时可免费取消。</p>
+</div>
+</div>
+<!-- Help Card -->
+<div class="bg-secondary-container/30 p-6 rounded-3xl flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<div>
+<h4 class="font-label-md font-bold text-on-secondary-container">100% 私密与安全</h4>
+<p class="text-label-sm text-on-secondary-fixed-variant leading-tight">所有咨询均经过加密处理，并符合国际健康隐私标准。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-4 pt-2 bg-surface shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined filled-icon">psychology</span>
+<span class="font-label-sm text-label-sm">测评</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-label-sm text-label-sm">档案</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-80 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">我的</span>
+</a>
+</nav>
+<script>
+    // Simple micro-interaction for calendar selection
+    const calendarButtons = document.querySelectorAll('.calendar-grid button:not(.text-outline-variant)');
+    calendarButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            calendarButtons.forEach(b => {
+                b.classList.remove('bg-primary', 'text-on-primary', 'font-bold', 'shadow-md');
+                b.classList.add('hover:bg-primary-fixed/30');
+            });
+            btn.classList.add('bg-primary', 'text-on-primary', 'font-bold', 'shadow-md');
+            btn.classList.remove('hover:bg-primary-fixed/30');
+        });
+    });
+
+    const timeButtons = document.querySelectorAll('.grid-cols-2 button');
+    timeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            timeButtons.forEach(b => {
+                b.classList.remove('border-2', 'border-primary', 'bg-primary/5', 'text-primary', 'font-bold');
+                b.classList.add('border', 'border-outline-variant');
+            });
+            btn.classList.add('border-2', 'border-primary', 'bg-primary/5', 'text-primary', 'font-bold');
+            btn.classList.remove('border', 'border-outline-variant');
+        });
+    });
+</script>
+</body></html>

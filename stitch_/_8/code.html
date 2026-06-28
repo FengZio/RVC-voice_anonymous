@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SerenePath | 患者管理系统</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#bde9ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e0",
+                    "on-tertiary-fixed": "#321201",
+                    "on-primary-fixed-variant": "#154c60",
+                    "on-background": "#1a1c1b",
+                    "error-container": "#ffdad6",
+                    "secondary": "#44664e",
+                    "secondary-fixed": "#c6eccd",
+                    "on-surface-variant": "#41484c",
+                    "on-tertiary-container": "#fffbff",
+                    "primary": "#2f6277",
+                    "on-surface": "#1a1c1b",
+                    "secondary-fixed-dim": "#abcfb2",
+                    "tertiary": "#7f5137",
+                    "outline-variant": "#c0c7cc",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#9ccee5",
+                    "surface": "#faf9f7",
+                    "on-secondary-fixed": "#00210f",
+                    "surface-container": "#efeeec",
+                    "on-tertiary-fixed-variant": "#673c24",
+                    "inverse-surface": "#2f3130",
+                    "primary-fixed-dim": "#9ccee5",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-secondary-fixed-variant": "#2d4e37",
+                    "surface-dim": "#dadad8",
+                    "tertiary-fixed": "#ffdbca",
+                    "surface-tint": "#326479",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001f2a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#faf9f7",
+                    "outline": "#71787c",
+                    "surface-container-high": "#e9e8e6",
+                    "on-primary-container": "#fbfdff",
+                    "tertiary-fixed-dim": "#f7b999",
+                    "surface-bright": "#faf9f7",
+                    "on-secondary-container": "#4a6c54",
+                    "secondary-container": "#c6eccd",
+                    "primary-container": "#4a7b90",
+                    "surface-container-low": "#f4f3f1",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#9b694e",
+                    "surface-variant": "#e3e2e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "display": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9f7;
+            font-family: 'Manrope', sans-serif;
+            color: #1a1c1b;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7cc;
+            border-radius: 10px;
+        }
+        .soft-elevation {
+            box-shadow: 0 20px 40px -10px rgba(47, 98, 119, 0.08);
+        }
+        .bubble-patient {
+            border-radius: 4px 18px 18px 18px;
+        }
+        .bubble-doctor {
+            border-radius: 18px 4px 18px 18px;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(250, 249, 247, 0.8);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- Navigation Shell (SideNavBar) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low flex flex-col py-margin-desktop px-4 gap-unit shadow-lg shadow-primary/5 z-40 hidden md:flex">
+<div class="mb-10 px-4">
+<span class="font-display text-headline-md font-bold text-primary">SerenePath</span>
+</div>
+<div class="flex items-center gap-3 px-4 mb-8">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img alt="Dr. Serene" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwi8Kag60GhqqWPzDwFgtO7z9kTmhvtTBFcefWoyt1EWmJNX8TnBLbu9jCz8RyJum7-0BF5b7EEkR3DgNB1z5toXpo5zEERSvn_2T-LYZNTRRMKEfA1X-iPSGwfl0iuHPoX9Gg3gDx6q6sdOFulvwCSck_mNWnWf_HKXmyE2ZFd9bjxAdkmjX0P33Dv-F9vvChy0stGiHUmMo4uHWjFpXtwNkZNoejpin5wD65iJpQ4Zke77Rqo7t_b2rTSWQFgJNqIfxVvn4lzcQ"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-bold">宁医生</p>
+<p class="text-xs text-on-surface-variant">临床心理学家</p>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">控制台</span>
+</a>
+<!-- Active State for Patients -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-xl transition-transform scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">患者列表</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">日程安排</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">video_chat</span>
+<span class="font-label-md text-label-md">远程咨询</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">评估报告</span>
+</a>
+</nav>
+<button class="mx-4 mt-4 bg-primary text-on-primary py-2.5 rounded-full font-label-md text-label-md shadow-md hover:bg-primary-container hover:text-on-primary-container transition-all">
+        开始咨询
+    </button>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">设置</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all rounded-xl" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">帮助</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:pl-64 flex h-screen">
+<!-- Patient List Column (Left) -->
+<div class="w-full md:w-1/3 lg:w-80 h-full border-r border-outline-variant flex flex-col bg-surface-container-low">
+<div class="p-6">
+<h1 class="font-display text-headline-md text-primary mb-4">患者</h1>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface rounded-xl border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-body-md" placeholder="搜索患者..." type="text"/>
+</div>
+</div>
+<div class="flex-grow overflow-y-auto custom-scrollbar px-2 space-y-1">
+<!-- Patient Item (Active) -->
+<div class="p-4 mx-2 bg-surface rounded-2xl border-l-4 border-primary soft-elevation transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-primary font-bold">万斯 (Eleanor Vance)</span>
+<span class="text-[10px] text-on-surface-variant bg-surface-container rounded-full px-2">2小时前</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-1 mb-2">主诉：反复社交焦虑</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">状态稳定</span>
+<span class="text-xs text-outline font-medium">末次访谈：10月24日</span>
+</div>
+</div>
+<!-- Patient Item -->
+<div class="p-4 mx-2 hover:bg-surface-variant rounded-2xl transition-all cursor-pointer border-l-4 border-transparent">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">索恩 (Julian Thorne)</span>
+<span class="text-[10px] text-on-surface-variant bg-surface-container rounded-full px-2">昨天</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-1 mb-2">主诉：慢性压力与失眠</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">持续关注</span>
+<span class="text-xs text-outline font-medium">末次访谈：10月22日</span>
+</div>
+</div>
+<!-- Patient Item -->
+<div class="p-4 mx-2 hover:bg-surface-variant rounded-2xl transition-all cursor-pointer border-l-4 border-transparent">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">西蒙斯 (Clara Simmons)</span>
+<span class="text-[10px] text-on-surface-variant bg-surface-container rounded-full px-2">10月20日</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-1 mb-2">主诉：创伤后应激处理</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">好转中</span>
+<span class="text-xs text-outline font-medium">末次访谈：10月15日</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Patient View (Right) -->
+<div class="flex-grow h-full bg-surface overflow-y-auto custom-scrollbar flex flex-col">
+<!-- Header -->
+<div class="glass-header sticky top-0 z-30 px-gutter py-6 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
+<img alt="Eleanor Vance" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQsrCGpXQUw00iuGO9OQ0tqKlPoUZSlYnovjHggVuU-m689AkeRT-LPc4R9d3Y1MbQ4kJHLl1cSJ9o1GxIFnPuegXsQVFg1-cyAQ6v0-bCb7AWjDrjm401OfLufbGFzyZh_ZjNPcg8nJtCMB2SI7sX1e-8sHYBkZTqee8DitnYCoWqH4xzdlEmOIUU14Q1LglGzaKbMRKSVCRT4ym4n_rh21aUWCV9TkefAoQLSLByHtEDAuDVavyWfspSErKhFLDb4Ev9raaC3kk"/>
+</div>
+<div>
+<h2 class="font-display text-headline-lg text-primary">万斯 (Eleanor Vance)</h2>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">fingerprint</span> 患者ID: #PA-9021
+                        </span>
+<span class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">cake</span> 28 岁
+                        </span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-primary hover:bg-primary-fixed rounded-full transition-all" title="语音通话">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="p-2 text-primary hover:bg-primary-fixed rounded-full transition-all" title="视频通话">
+<span class="material-symbols-outlined">videocam</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md shadow-md hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> 新建笔记
+                </button>
+</div>
+</div>
+<!-- Dashboard Content -->
+<div class="px-gutter pb-margin-desktop grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+<!-- Assessment Reports (GAD/PHQ) -->
+<div class="lg:col-span-2 space-y-6">
+<section class="bg-surface-container-low p-6 rounded-[32px] border border-outline-variant/50">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-display text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span> 最近评估
+                        </h3>
+<button class="text-primary font-label-md text-label-md hover:underline">查看历史记录</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- PHQ-9 Card -->
+<div class="bg-surface p-5 rounded-2xl border border-outline-variant/30 soft-elevation">
+<div class="flex justify-between items-start mb-4">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-xs font-bold">PHQ-9</span>
+<span class="text-xs text-on-surface-variant">2023年10月24日</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-3xl font-bold text-primary">12</span>
+<span class="text-sm text-on-surface-variant mb-1">/ 27</span>
+</div>
+<p class="text-sm font-medium text-on-surface mb-3">中度抑郁</p>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 44%"></div>
+</div>
+</div>
+<!-- GAD-7 Card -->
+<div class="bg-surface p-5 rounded-2xl border border-outline-variant/30 soft-elevation">
+<div class="flex justify-between items-start mb-4">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-xs font-bold">GAD-7</span>
+<span class="text-xs text-on-surface-variant">2023年10月24日</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-3xl font-bold text-secondary">08</span>
+<span class="text-sm text-on-surface-variant mb-1">/ 21</span>
+</div>
+<p class="text-sm font-medium text-on-surface mb-3">轻度焦虑</p>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full transition-all duration-1000" style="width: 38%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Historical Notes -->
+<section>
+<h3 class="font-display text-headline-md text-on-surface mb-4">咨询笔记</h3>
+<div class="space-y-4">
+<!-- Note Item -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-outline-variant/30 hover:border-primary/30 transition-all">
+<div class="flex justify-between items-start mb-3">
+<h4 class="font-bold text-on-surface">每周心理访谈</h4>
+<span class="text-sm text-on-surface-variant">2023年10月24日 • 50 分钟</span>
+</div>
+<p class="text-on-surface-variant text-body-md leading-relaxed mb-4">
+                                患者自述本周处理工作压力较为困难。在晨会期间出现心率加快和呼吸变浅。我们练习了认知重组技术，并讨论了“锚定”接地练习。访谈结束时，她表示感觉更有能力应对这些诱发因素。
+                            </p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full text-xs">CBT (认知行为疗法)</span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full text-xs">社交焦虑</span>
+</div>
+</div>
+<!-- Note Item -->
+<div class="bg-surface-container-lowest p-6 rounded-[24px] border border-outline-variant/30 hover:border-primary/30 transition-all opacity-80">
+<div class="flex justify-between items-start mb-3">
+<h4 class="font-bold text-on-surface">初诊评估</h4>
+<span class="text-sm text-on-surface-variant">2023年10月17日 • 60 分钟</span>
+</div>
+<p class="text-on-surface-variant text-body-md leading-relaxed">
+                                完成初次访谈评估。患者病史显示两年前曾参与过心理咨询。主要目标：重新建立针对情境焦虑的应对机制。
+                            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Sidebar Info (Right Side) -->
+<div class="space-y-6">
+<!-- Files & Attachments -->
+<section class="bg-surface-container-high/40 p-6 rounded-[32px]">
+<h3 class="font-bold text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">attach_file</span> 附件档案
+                    </h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface rounded-xl border border-outline-variant/20 hover:bg-primary-fixed/20 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">description</span>
+<div class="overflow-hidden">
+<p class="text-sm font-medium text-on-surface truncate">转诊信.pdf</p>
+<p class="text-[10px] text-on-surface-variant">1.2 MB • 10月15日</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">download</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface rounded-xl border border-outline-variant/20 hover:bg-primary-fixed/20 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">image</span>
+<div class="overflow-hidden">
+<p class="text-sm font-medium text-on-surface truncate">认知地图_v1.jpg</p>
+<p class="text-[10px] text-on-surface-variant">2.8 MB • 10月24日</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">download</span>
+</div>
+</div>
+<button class="w-full mt-4 py-2 border-2 border-dashed border-outline-variant rounded-xl text-on-surface-variant font-label-md text-label-md hover:border-primary transition-all">
+                        + 上传文件
+                    </button>
+</section>
+<!-- Treatment Plan -->
+<section class="bg-primary-container text-on-primary-container p-6 rounded-[32px] soft-elevation">
+<h3 class="font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">track_changes</span> 治疗目标
+                    </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="text-sm leading-snug">识别职场社交环境中的前三大焦虑诱因。</p>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="text-sm leading-snug">熟练掌握方盒呼吸法进行主动压力管理。</p>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined opacity-40">radio_button_unchecked</span>
+<p class="text-sm leading-snug">启动暴露层级计划：在团队简报中发言。</p>
+</li>
+</ul>
+</section>
+<!-- Quick Vitals -->
+<section class="bg-surface-container-low p-6 rounded-[32px] border border-outline-variant/50">
+<h3 class="font-bold text-on-surface mb-4">康复指标</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center p-3 bg-surface rounded-2xl">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-wider mb-1">执行率</p>
+<p class="text-xl font-display font-bold text-secondary">92%</p>
+</div>
+<div class="text-center p-3 bg-surface rounded-2xl">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-wider mb-1">情绪均值</p>
+<p class="text-xl font-display font-bold text-primary">稳定</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Shell (BottomNavBar) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-4 pt-2 bg-surface shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-sm text-label-sm">评估</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-label-sm text-label-sm">病历</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">个人</span>
+</a>
+</nav>
+<!-- Contextual FAB (Only on relevant screens) -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center md:bottom-12 md:right-12 active:scale-90 transition-transform z-50" title="编辑笔记">
+<span class="material-symbols-outlined text-[32px]">edit</span>
+</button>
+<script>
+    // Simple Interaction logic for demo
+    document.querySelectorAll('.hover\\:bg-surface-variant').forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from others
+            document.querySelectorAll('.border-primary').forEach(el => {
+                el.classList.remove('border-primary', 'bg-surface', 'soft-elevation');
+                el.classList.add('border-transparent');
+            });
+            // Add to clicked
+            this.classList.add('border-primary', 'bg-surface', 'soft-elevation');
+            this.classList.remove('border-transparent');
+        });
+    });
+</script>
+</body></html>

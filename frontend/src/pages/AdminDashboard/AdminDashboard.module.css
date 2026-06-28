@@ -1,0 +1,242 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.metricGrid,
+.knowledgeGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.noticeBlock,
+.reviewLayout,
+.configLayout {
+  display: grid;
+  gap: 14px;
+}
+
+.noticeBlock {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+.noticeBlock strong,
+.reviewDetail h3,
+.knowledgeCard h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.noticeBlock p,
+.reviewDetail p,
+.knowledgeCard p {
+  margin: 4px 0 0;
+  color: #59676d;
+  line-height: 1.5;
+}
+
+.reviewLayout {
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+}
+
+.reviewList,
+.reviewActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewCard {
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+  text-align: left;
+}
+
+.reviewCardActive {
+  background: rgba(185, 233, 255, 0.28);
+  border-color: rgba(47, 98, 119, 0.26);
+}
+
+.reviewCard p {
+  margin: 6px 0 10px;
+  color: #59676d;
+  line-height: 1.5;
+}
+
+.reviewDetail {
+  padding: 14px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+
+.primaryButton,
+.secondaryButton {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.75);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f7fafb;
+}
+
+.primaryButton {
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.knowledgeCard {
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+.inlineNote {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 14px;
+  background: #f7fafb;
+}
+
+.configLayout {
+  grid-template-columns: 1fr;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid rgba(192, 199, 204, 0.85);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebarTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarTop h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.sidebarTop p {
+  margin: 4px 0 0;
+  color: #59676d;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4a7b90 0%, #2f6277 100%);
+  color: #fff;
+  font-weight: 700;
+}
+
+.footerBox p {
+  margin: 10px 0 0;
+  color: #59676d;
+  line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+  .reviewLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .metricGrid,
+  .knowledgeGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .noticeBlock {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .metricGrid,
+  .knowledgeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.emptyHint {
+  padding: 14px;
+  color: #59676d;
+  text-align: center;
+  font-size: 14px;
+}
+.profileDraftFields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.profileDraftField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid rgba(192, 199, 204, 0.55);
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+.profileDraftField span {
+  font-size: 13px;
+  color: #59676d;
+}
+
+.profileDraftField strong {
+  font-size: 14px;
+  max-width: 60%;
+  text-align: right;
+  word-break: break-word;
+}
