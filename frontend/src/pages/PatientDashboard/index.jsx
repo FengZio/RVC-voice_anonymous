@@ -10,6 +10,7 @@ import { SectionCard } from '../../components/SectionCard.jsx';
 import { apiForm, apiJson } from '../../utils/api.js';
 import { STORAGE_TOKEN_KEY } from '../../constants.js';
 import { WebRTCCall } from '../../components/WebRTCCall.jsx';
+import { RVCBridge } from '../../components/RVCBridge.jsx';
 import styles from './PatientDashboard.module.css';
 
 const MODULES = [
@@ -17,6 +18,7 @@ const MODULES = [
   { key: 'questionnaire', label: '问卷评估', hint: '量表分值与建议', icon: ShieldCheck },
   { key: 'appointment', label: '咨询预约', hint: '医生筛选预约与聊天', icon: CalendarDays },
   { key: 'chat', label: '聊天详情', hint: '会话内容与继续预约', icon: MessageSquare },
+  { key: 'rvc-test', label: 'RVC 测试', hint: '麦克风匿名化链路', icon: Mic },
   { key: 'records', label: '个人中心', hint: '诊疗记录与趋势', icon: FileUser },
 ];
 const MODE_OPTIONS = ['现场面诊', '视频门诊', '电话咨询'];
@@ -630,7 +632,189 @@ function RecordsSection({ records, archiveSummary, selectedRecordId, setSelected
   );
 }
 
-function ProfileSection({ user }) {
+function RVCTestSection({ user, onBack }) {
+  const [models, setModels] = React.useState([]);
+  const [modelName, setModelName] = React.useState('');
+  const [inputStream, setInputStream] = React.useState(null);
+  const [processedStream, setProcessedStream] = React.useState(null);
+  const [status, setStatus] = React.useState('idle');
+  const [error, setError] = React.useState('');
+  const [rvcLogs, setRvcLogs] = React.useState('');
+  const [chunkMs, setChunkMs] = React.useState(1600);
+  const [silenceThreshold, setSilenceThreshold] = React.useState(0.003);
+  const [outputVolume, setOutputVolume] = React.useState(1);
+  const [chunkStats, setChunkStats] = React.useState({ peak: 0, durationMs: 0 });
+  const audioRef = React.useRef(null);
+  const sessionId = React.useMemo(function() {
+    return 'patient-rvc-test-' + (user && user.id || 'local');
+  }, [user]);
+
+  React.useEffect(function() {
+    apiJson('/api/models')
+      .then(function(data) {
+        var nextModels = data.models || [];
+        setModels(nextModels);
+        if (nextModels.length > 0) {
+          setModelName(nextModels[0].name);
+        }
+      })
+      .catch(function(err) {
+        setError(err.message || String(err));
+      });
+  }, []);
+
+  React.useEffect(function() {
+    if (audioRef.current && processedStream) {
+      audioRef.current.srcObject = processedStream;
+      audioRef.current.play().catch(function() {});
+    }
+  }, [processedStream]);
+
+  React.useEffect(function() {
+    if (status === 'idle') return undefined;
+
+    var cancelled = false;
+    function loadLogs() {
+      apiJson('/api/rvc-logs/' + encodeURIComponent(sessionId) + '?lines=120')
+        .then(function(data) {
+          if (!cancelled) {
+            setRvcLogs(data.logs || '');
+          }
+        })
+        .catch(function(err) {
+          if (!cancelled) {
+            setRvcLogs(err.message || String(err));
+          }
+        });
+    }
+
+    loadLogs();
+    var timer = window.setInterval(loadLogs, 1500);
+    return function() {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [sessionId, status]);
+
+  React.useEffect(function() {
+    return function() {
+      if (inputStream) {
+        inputStream.getTracks().forEach(function(track) { track.stop(); });
+      }
+    };
+  }, [inputStream]);
+
+  function stopTest() {
+    if (inputStream) {
+      inputStream.getTracks().forEach(function(track) { track.stop(); });
+    }
+    setInputStream(null);
+    setProcessedStream(null);
+    setStatus('idle');
+  }
+
+  function startTest() {
+    setError('');
+    setRvcLogs('');
+    if (!modelName) {
+      setError('请先放入可用的 RVC 模型。');
+      return;
+    }
+    setStatus('starting');
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        setInputStream(stream);
+        setStatus('running');
+      })
+      .catch(function(err) {
+        setStatus('idle');
+        setError(err.message || '无法打开麦克风。');
+      });
+  }
+
+  return (
+    <SectionCard
+      title="RVC 实时测试"
+      description="从麦克风输入到匿名化输出，快速确认本机 RVC 链路是否可用。"
+      icon={<Mic size={16} />}
+      action={<StatusBadge tone={status === 'running' ? 'success' : status === 'starting' ? 'accent' : 'neutral'}>{status === 'running' ? '运行中' : status === 'starting' ? '启动中' : '未启动'}</StatusBadge>}
+    >
+      <div className={styles.rvcTestLayout}>
+        <div className={styles.rvcTestPanel}>
+          <label className={styles.rvcField}>
+            <span>测试模型</span>
+            <select value={modelName} onChange={function(event) { setModelName(event.target.value); }} disabled={status === 'running'}>
+              {models.length === 0 ? <option value="">暂无模型</option> : null}
+              {models.map(function(model) {
+                return <option key={model.name} value={model.name}>{model.name}</option>;
+              })}
+            </select>
+          </label>
+          <div className={styles.rvcStatusGrid}>
+            <div><span>模型数量</span><strong>{models.length}</strong></div>
+            <div><span>输入</span><strong>{inputStream ? '麦克风已连接' : '未连接'}</strong></div>
+            <div><span>输出</span><strong>{processedStream ? '匿名音频' : '等待输出'}</strong></div>
+          </div>
+          <div className={styles.rvcControls}>
+            <label>
+              <span>分片时长 <strong>{chunkMs}ms</strong></span>
+              <input type="range" min="800" max="2600" step="200" value={chunkMs} disabled={status === 'running'} onChange={function(event) { setChunkMs(Number(event.target.value)); }} />
+            </label>
+            <label>
+              <span>静音阈值 <strong>{silenceThreshold.toFixed(3)}</strong></span>
+              <input type="range" min="0.001" max="0.02" step="0.001" value={silenceThreshold} disabled={status === 'running'} onChange={function(event) { setSilenceThreshold(Number(event.target.value)); }} />
+            </label>
+            <label>
+              <span>输出音量 <strong>{Math.round(outputVolume * 100)}%</strong></span>
+              <input type="range" min="0.2" max="1.6" step="0.1" value={outputVolume} disabled={status === 'running'} onChange={function(event) { setOutputVolume(Number(event.target.value)); }} />
+            </label>
+          </div>
+          <div className={styles.rvcMeter}>
+            <div>
+              <span style={{ width: `${Math.min(100, Math.round(chunkStats.peak * 100))}%` }} />
+            </div>
+            <p>输入峰值 {chunkStats.peak.toFixed(3)} · 实际分片 {chunkStats.durationMs || chunkMs}ms</p>
+          </div>
+          {error ? <div className={styles.rvcError}>{error}</div> : null}
+          <div className={styles.actionRow}>
+            {status === 'running' ? (
+              <button className={styles.secondaryButton} type="button" onClick={stopTest}>停止测试</button>
+            ) : (
+              <button className={styles.primaryButton} type="button" onClick={startTest}><Mic size={14} />开始测试</button>
+            )}
+            <button className={styles.secondaryButton} type="button" onClick={onBack}>返回个人中心</button>
+          </div>
+        </div>
+        <div className={styles.rvcMonitor}>
+          <div className={styles.rvcLogHeader}>
+            <div>
+              <HeartPulse size={18} />
+              <h3>RVC 日志</h3>
+            </div>
+            <StatusBadge tone={rvcLogs ? 'success' : 'neutral'}>{rvcLogs ? '已连接' : '等待日志'}</StatusBadge>
+          </div>
+          <pre className={styles.rvcLogBox}>{rvcLogs || '暂无 RVC 日志。启动测试后会在这里显示 worker 启动、分片处理和错误信息。'}</pre>
+          <audio ref={audioRef} autoPlay />
+        </div>
+      </div>
+      {inputStream && modelName ? (
+        <RVCBridge
+          inputStream={inputStream}
+          modelName={modelName}
+          sessionId={sessionId}
+          chunkMs={chunkMs}
+          silenceThreshold={silenceThreshold}
+          outputVolume={outputVolume}
+          onProcessedStream={setProcessedStream}
+          onError={function(message) { setError(message); }}
+          onChunkStats={setChunkStats}
+        />
+      ) : null}
+    </SectionCard>
+  );
+}
+
+function ProfileSection({ user, onOpenRvcTest }) {
   return (
     <SectionCard title="个人信息" description="当前账号的基础资料与导诊状态。" icon={<UserRound size={16} />} action={<StatusBadge tone="success">已登录</StatusBadge>}>
       <div className={styles.profileSection}>
@@ -641,6 +825,13 @@ function ProfileSection({ user }) {
         <div className={styles.profileGrid}>
           <div className={styles.profileGridItem}><span>用户名</span><strong>{user.username}</strong></div>
           <div className={styles.profileGridItem}><span>角色</span><strong>{user.role}</strong></div>
+        </div>
+        <div className={styles.settingsPanel}>
+          <div>
+            <h3>设置</h3>
+            <p>测试本机麦克风到 RVC 匿名化输出的实时链路。</p>
+          </div>
+          <button className={styles.primaryButton} type="button" onClick={onOpenRvcTest}><Mic size={14} />进入 RVC 测试</button>
         </div>
       </div>
     </SectionCard>
@@ -824,11 +1015,12 @@ export function PatientDashboard({ user, onLogout }) {
     appointment: <ConsultationSection doctors={doctors} selectedDoctorId={selectedDoctorId} setSelectedDoctorId={setSelectedDoctorId} doctorQuery={doctorQuery} setDoctorQuery={setDoctorQuery} mode={appointmentMode} setMode={setAppointmentMode} appointmentDate={appointmentDate} setAppointmentDate={setAppointmentDate} appointmentSlot={appointmentSlot} setAppointmentSlot={setAppointmentSlot} reason={appointmentReason} setReason={setAppointmentReason} bookingFeed={bookingFeed} onBook={handleBookAppointment} onOpenChat={function(doctorId) { setChatDoctorId(doctorId); setActiveModule('chat'); }} />,
     doctors: null,
     chat: <ChatDetailSection doctor={doctors.find(function(item) { return item.id === chatDoctorId; }) || doctors[0] || null} mode={chatMode} appointmentFeed={bookingFeed} onBack={function() { setActiveModule('appointment'); }} onBook={handleBookAppointment} onModeChange={setChatMode} token={token} />,
+    'rvc-test': <RVCTestSection user={user} onBack={function() { setActiveModule('records'); }} />,
     records: (
       <div className={styles.stack}>
         <EmrSection emrs={emrs} />
         <RecordsSection records={records} archiveSummary={archiveSummary} selectedRecordId={selectedRecordId} setSelectedRecordId={setSelectedRecordId} />
-        <ProfileSection user={user} />
+        <ProfileSection user={user} onOpenRvcTest={function() { setActiveModule('rvc-test'); }} />
       </div>
     ),
   })[activeModule];

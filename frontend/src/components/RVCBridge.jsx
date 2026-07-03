@@ -44,13 +44,51 @@ function int16ToFloatPcm(input) {
   return output;
 }
 
-export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream, onError }) {
+function parseWavPcm(bytes) {
+  if (bytes.length < 44) return null;
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const sampleRate = view.getUint32(24, true);
+  const bitsPerSample = view.getUint16(34, true);
+  let offset = 12;
+  while (offset + 8 <= bytes.length) {
+    const chunkId = String.fromCharCode(
+      bytes[offset],
+      bytes[offset + 1],
+      bytes[offset + 2],
+      bytes[offset + 3],
+    );
+    const chunkSize = view.getUint32(offset + 4, true);
+    const dataStart = offset + 8;
+    if (chunkId === 'data') {
+      return { sampleRate, bitsPerSample, dataStart, dataSize: chunkSize };
+    }
+    offset = dataStart + chunkSize + (chunkSize % 2);
+  }
+  return null;
+}
+
+export function RVCBridge({
+  inputStream,
+  modelName,
+  sessionId,
+  chunkMs = 1600,
+  silenceThreshold = 0.003,
+  outputVolume = 1,
+  onProcessedStream,
+  onError,
+  onChunkStats,
+}) {
   const wsRef = useRef(null);
   const ctxRef = useRef(null);
   const destRef = useRef(null);
   const procRef = useRef(null);
+  const silentGainRef = useRef(null);
+  const outputGainRef = useRef(null);
   const mountedRef = useRef(true);
   const chunkIdxRef = useRef(0);
+  const pendingFramesRef = useRef([]);
+  const pendingSamplesRef = useRef(0);
+  const nextPlayTimeRef = useRef(0);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -64,13 +102,23 @@ export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream
     const sampleRate = 16000;
     const audioCtx = new AudioCtx({ sampleRate });
     ctxRef.current = audioCtx;
+    nextPlayTimeRef.current = 0;
+    pendingFramesRef.current = [];
+    pendingSamplesRef.current = 0;
 
     const dest = audioCtx.createMediaStreamDestination();
+    const outputGain = audioCtx.createGain();
+    outputGain.gain.value = outputVolume;
+    outputGain.connect(dest);
     destRef.current = dest;
+    outputGainRef.current = outputGain;
 
     const source = audioCtx.createMediaStreamSource(inputStream);
     const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+    const silentGain = audioCtx.createGain();
+    silentGain.gain.value = 0;
     procRef.current = processor;
+    silentGainRef.current = silentGain;
 
     const sid = sessionId || ('rvc-' + Date.now());
     const wsUrl = 'ws://127.0.0.1:7860/api/rvc/stream/' + sid + '?model=' + encodeURIComponent(modelName) + '&transpose=0&f0_method=rmvpe';
@@ -79,9 +127,10 @@ export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream
 
     ws.onopen = () => {
       if (!mountedRef.current) return;
-      // Connect source to processor for capture only (NOT to dest)
+      audioCtx.resume().catch(() => {});
       source.connect(processor);
-      // Pass the processed stream handle to parent
+      processor.connect(silentGain);
+      silentGain.connect(audioCtx.destination);
       if (onProcessedStream) {
         onProcessedStream(dest.stream);
       }
@@ -91,15 +140,35 @@ export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream
       if (!mountedRef.current || ws.readyState !== WebSocket.OPEN) return;
 
       const floatData = event.inputBuffer.getChannelData(0);
+      const frame = new Float32Array(floatData);
+      pendingFramesRef.current.push(frame);
+      pendingSamplesRef.current += frame.length;
 
-      // Skip silent chunks to save bandwidth
+      const targetSamples = Math.max(4096, Math.round(audioCtx.sampleRate * chunkMs / 1000));
+      if (pendingSamplesRef.current < targetSamples) return;
+
+      const chunkData = new Float32Array(pendingSamplesRef.current);
+      let offset = 0;
+      pendingFramesRef.current.forEach((item) => {
+        chunkData.set(item, offset);
+        offset += item.length;
+      });
+      pendingFramesRef.current = [];
+      pendingSamplesRef.current = 0;
+
       let hasSignal = false;
-      for (let i = 0; i < floatData.length; i++) {
-        if (Math.abs(floatData[i]) > 0.005) { hasSignal = true; break; }
+      let peak = 0;
+      for (let i = 0; i < chunkData.length; i++) {
+        const value = Math.abs(chunkData[i]);
+        if (value > peak) peak = value;
+        if (value > silenceThreshold) hasSignal = true;
+      }
+      if (onChunkStats) {
+        onChunkStats({ peak, samples: chunkData.length, durationMs: Math.round(chunkData.length / audioCtx.sampleRate * 1000) });
       }
       if (!hasSignal) return;
 
-      const int16Data = floatTo16BitPcm(floatData);
+      const int16Data = floatTo16BitPcm(chunkData);
       const header = createWavHeader(audioCtx.sampleRate, int16Data.length);
       const wav = new Uint8Array(header.byteLength + int16Data.byteLength);
       wav.set(new Uint8Array(header), 0);
@@ -127,24 +196,27 @@ export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream
           bytes[i] = binary.charCodeAt(i);
         }
 
-        // Skip 44-byte WAV header
-        const pcmLen = (bytes.length - 44) / 2;
-        if (pcmLen <= 0) return;
+        const wav = parseWavPcm(bytes);
+        if (!wav || wav.bitsPerSample !== 16) return;
 
+        const pcmLen = Math.floor(Math.min(wav.dataSize, bytes.length - wav.dataStart) / 2);
+        if (pcmLen <= 0) return;
         const int16 = new Int16Array(pcmLen);
-        const view = new DataView(bytes.buffer.slice(44));
+        const view = new DataView(bytes.buffer, bytes.byteOffset + wav.dataStart, pcmLen * 2);
         for (let i = 0; i < pcmLen; i++) {
           int16[i] = view.getInt16(i * 2, true);
         }
 
         const floatOut = int16ToFloatPcm(int16);
-        const buf = ctxRef.current.createBuffer(1, floatOut.length, 16000);
+        const buf = ctxRef.current.createBuffer(1, floatOut.length, wav.sampleRate || ctxRef.current.sampleRate);
         buf.getChannelData(0).set(floatOut);
 
         const bufSrc = ctxRef.current.createBufferSource();
         bufSrc.buffer = buf;
-        bufSrc.connect(destRef.current);
-        bufSrc.start();
+        bufSrc.connect(outputGainRef.current || destRef.current);
+        const startAt = Math.max(ctxRef.current.currentTime + 0.04, nextPlayTimeRef.current || 0);
+        bufSrc.start(startAt);
+        nextPlayTimeRef.current = startAt + buf.duration;
       } catch (_) {}
     };
 
@@ -162,10 +234,12 @@ export function RVCBridge({ inputStream, modelName, sessionId, onProcessedStream
 
     return () => {
       try { procRef.current && procRef.current.disconnect(); } catch (_) {}
+      try { silentGainRef.current && silentGainRef.current.disconnect(); } catch (_) {}
+      try { outputGainRef.current && outputGainRef.current.disconnect(); } catch (_) {}
       try { wsRef.current && wsRef.current.close(); } catch (_) {}
       try { ctxRef.current && ctxRef.current.close(); } catch (_) {}
     };
-  }, [inputStream, modelName, sessionId]);
+  }, [inputStream, modelName, sessionId, chunkMs, silenceThreshold, outputVolume]);
 
   // Return a hidden audio element for the processed stream to play through
   return React.createElement('audio', { ref: (el) => { if (el && destRef.current) { el.srcObject = destRef.current.stream; } }, autoPlay: true, style: { display: 'none' } });
