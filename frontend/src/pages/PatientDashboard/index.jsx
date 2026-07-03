@@ -716,12 +716,21 @@ function RVCTestSection({ user, onBack }) {
   function startTest() {
     setError('');
     setRvcLogs('');
+    var mediaDevices = typeof navigator !== 'undefined' ? navigator.mediaDevices : null;
+    if (!window.isSecureContext) {
+      setError('手机浏览器需要通过 HTTPS 才能使用麦克风。当前是 HTTP 局域网地址，请改用 HTTPS、受信任证书或浏览器安全来源白名单。');
+      return;
+    }
+    if (!mediaDevices || !mediaDevices.getUserMedia) {
+      setError('当前浏览器没有开放麦克风 API。手机端请使用 HTTPS 地址，或换用支持 getUserMedia 的浏览器。');
+      return;
+    }
     if (!modelName) {
       setError('请先放入可用的 RVC 模型。');
       return;
     }
     setStatus('starting');
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    mediaDevices.getUserMedia({ audio: true })
       .then(function(stream) {
         setInputStream(stream);
         setStatus('running');

@@ -1,7 +1,23 @@
 import React, { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Mic, MicOff, Phone, PhoneOff } from 'lucide-react';
 import styles from './WebRTCCall.module.css';
+import { websocketUrl } from '../constants.js';
 function createWavHeader(e,t){var n=new ArrayBuffer(44),r=new DataView(n);return writeWStr(r,0,'RIFF'),r.setUint32(4,36+2*t,!0),writeWStr(r,8,'WAVE'),writeWStr(r,12,'fmt '),r.setUint32(16,16,!0),r.setUint16(20,1,!0),r.setUint16(22,1,!0),r.setUint32(24,e,!0),r.setUint32(28,2*e,!0),r.setUint16(32,2,!0),r.setUint16(34,16,!0),writeWStr(r,36,'data'),r.setUint32(40,2*t,!0),n}function writeWStr(e,t,n){for(var r=0;r<n.length;r++)e.setUint8(t+r,n.charCodeAt(r))}function floatTo16BitPcm(e){var t=new Int16Array(e.length);for(var n=0;n<e.length;n++){var r=Math.max(-1,Math.min(1,e[n]));t[n]=r<0?32768*r:32767*r}return t}function int16ToFloatPcm(e){var t=new Float32Array(e.length);for(var n=0;n<e.length;n++)t[n]=e[n]/(e[n]<0?32768:32767);return t}
+function parseWavPcm(bytes) {
+  if (bytes.length < 44) return null;
+  var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  var sampleRate = view.getUint32(24, true);
+  var bitsPerSample = view.getUint16(34, true);
+  var offset = 12;
+  while (offset + 8 <= bytes.length) {
+    var chunkId = String.fromCharCode(bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3]);
+    var chunkSize = view.getUint32(offset + 4, true);
+    var dataStart = offset + 8;
+    if (chunkId === 'data') return { sampleRate: sampleRate, bitsPerSample: bitsPerSample, dataStart: dataStart, dataSize: chunkSize };
+    offset = dataStart + chunkSize + (chunkSize % 2);
+  }
+  return null;
+}
 
 const ICE_SERVERS = [
   { urls: 'stun:stun.miwifi.com:3478' },
@@ -34,6 +50,9 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
   const rvcWsRef = useRef(null);
   const rvcProcRef = useRef(null);
   const rvcChunkIdxRef = useRef(0);
+  const rvcPendingFramesRef = useRef([]);
+  const rvcPendingSamplesRef = useRef(0);
+  const rvcNextPlayTimeRef = useRef(0);
   const initiatingRef = useRef(false);
   const [rvcEnabled, setRvcEnabled] = useState(!!rvcModel);
 
@@ -64,9 +83,18 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
 
   const getMic = useCallback(async () => {
     if (localStreamRef.current) return localStreamRef.current;
+    const mediaDevices = typeof navigator !== 'undefined' ? navigator.mediaDevices : null;
+    if (!window.isSecureContext) {
+      setError('手机浏览器需要通过 HTTPS 才能使用麦克风。当前 HTTP 局域网地址会被拦截。');
+      return null;
+    }
+    if (!mediaDevices || !mediaDevices.getUserMedia) {
+      setError('当前浏览器没有开放麦克风 API。手机端请使用 HTTPS 地址，或换用支持 getUserMedia 的浏览器。');
+      return null;
+    }
     var localStream;
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      localStream = await mediaDevices.getUserMedia({ audio: true });
     } catch (err) {
       if (!mountedRef.current) return null;
       if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
@@ -74,7 +102,7 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
       } else if (err.name === 'NotAllowedError') {
         setError('麦克风权限被拒绝，请在浏览器设置中允许');
       } else {
-        setError('获取麦克风失败：' + err.message);
+        setError('获取麦克风失败：' + (err.message || '请确认正在使用 HTTPS 访问。'));
       }
       return null;
     }
@@ -86,6 +114,9 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
         var AudioCtx = window.AudioContext || window.webkitAudioContext;
         var rvcCtx = new AudioCtx({ sampleRate: 16000 });
         rvcCtxRef.current = rvcCtx;
+        rvcPendingFramesRef.current = [];
+        rvcPendingSamplesRef.current = 0;
+        rvcNextPlayTimeRef.current = 0;
         await rvcCtx.resume();
         console.log('[RVC] AudioContext state after resume:', rvcCtx.state);
         if (rvcCtx.state !== 'running') {
@@ -116,10 +147,23 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
             return;
           }
           var floatData = event.inputBuffer.getChannelData(0);
+          var frame = new Float32Array(floatData);
+          rvcPendingFramesRef.current.push(frame);
+          rvcPendingSamplesRef.current += frame.length;
+          var targetSamples = Math.max(4096, Math.round(rvcCtx.sampleRate * 1600 / 1000));
+          if (rvcPendingSamplesRef.current < targetSamples) return;
+          var chunkData = new Float32Array(rvcPendingSamplesRef.current);
+          var offset = 0;
+          rvcPendingFramesRef.current.forEach(function(item) {
+            chunkData.set(item, offset);
+            offset += item.length;
+          });
+          rvcPendingFramesRef.current = [];
+          rvcPendingSamplesRef.current = 0;
           var hasSignal = false;
-          for (var i = 0; i < floatData.length; i++) { if (Math.abs(floatData[i]) > 0.005) { hasSignal = true; break; } }
+          for (var i = 0; i < chunkData.length; i++) { if (Math.abs(chunkData[i]) > 0.003) { hasSignal = true; break; } }
           if (!hasSignal) return;
-          var int16Data = floatTo16BitPcm(floatData);
+          var int16Data = floatTo16BitPcm(chunkData);
           var header = createWavHeader(rvcCtx.sampleRate, int16Data.length);
           var wav = new Uint8Array(header.byteLength + int16Data.byteLength);
           wav.set(new Uint8Array(header), 0);
@@ -131,7 +175,7 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
           if (chunkIdx % 20 === 0) console.log('[RVC] Sent chunk #' + chunkIdx + ', size=' + wav.length + ' bytes');
         };
         var sid = chatId + '-' + role;
-        var wsUrl = 'ws://127.0.0.1:7860/api/rvc/stream/' + sid + '?model=' + encodeURIComponent(rvcModel) + '&transpose=0&f0_method=rmvpe';
+        var wsUrl = websocketUrl('/api/rvc/stream/' + sid + '?model=' + encodeURIComponent(rvcModel) + '&transpose=0&f0_method=rmvpe');
         var rvcWs = new WebSocket(wsUrl);
         rvcWsRef.current = rvcWs;
         console.log('[RVC] WebSocket created, url:', wsUrl);
@@ -150,18 +194,22 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
             var binary = atob(msg.data);
             var bytes = new Uint8Array(binary.length);
             for (var j = 0; j < binary.length; j++) { bytes[j] = binary.charCodeAt(j); }
-            var pcmLen = (bytes.length - 44) / 2;
+            var wav = parseWavPcm(bytes);
+            if (!wav || wav.bitsPerSample !== 16) return;
+            var pcmLen = Math.floor(Math.min(wav.dataSize, bytes.length - wav.dataStart) / 2);
             if (pcmLen <= 0) return;
             var int16 = new Int16Array(pcmLen);
-            var view = new DataView(bytes.buffer.slice(44));
+            var view = new DataView(bytes.buffer, bytes.byteOffset + wav.dataStart, pcmLen * 2);
             for (var j = 0; j < pcmLen; j++) { int16[j] = view.getInt16(j * 2, true); }
             var floatOut = int16ToFloatPcm(int16);
-            var buf = rvcCtxRef.current.createBuffer(1, floatOut.length, 16000);
+            var buf = rvcCtxRef.current.createBuffer(1, floatOut.length, wav.sampleRate || rvcCtxRef.current.sampleRate);
             buf.getChannelData(0).set(floatOut);
             var bufSrc = rvcCtxRef.current.createBufferSource();
             bufSrc.buffer = buf;
             bufSrc.connect(rvcDestRef.current);
-            bufSrc.start();
+            var startAt = Math.max(rvcCtxRef.current.currentTime + 0.04, rvcNextPlayTimeRef.current || 0);
+            bufSrc.start(startAt);
+            rvcNextPlayTimeRef.current = startAt + buf.duration;
           } catch (_) {}
         };
         rvcWs.onerror = function() {
@@ -247,7 +295,7 @@ export const WebRTCCall = forwardRef(function WebRTCCall({ chatId, token, role, 
     if (!chatId || !token || !role) return;
     if (statusRef.current === 'ended') return;
 
-    const wsUrl = 'ws://127.0.0.1:7860/api/webrtc/signal/' + chatId + '?token=' + encodeURIComponent(token) + '&role=' + role;
+    const wsUrl = websocketUrl('/api/webrtc/signal/' + chatId + '?token=' + encodeURIComponent(token) + '&role=' + role);
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 

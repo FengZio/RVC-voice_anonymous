@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { websocketUrl } from '../constants.js';
 
 function createWavHeader(sampleRate, numSamples) {
   const byteRate = sampleRate * 2;
@@ -121,7 +122,7 @@ export function RVCBridge({
     silentGainRef.current = silentGain;
 
     const sid = sessionId || ('rvc-' + Date.now());
-    const wsUrl = 'ws://127.0.0.1:7860/api/rvc/stream/' + sid + '?model=' + encodeURIComponent(modelName) + '&transpose=0&f0_method=rmvpe';
+    const wsUrl = websocketUrl('/api/rvc/stream/' + sid + '?model=' + encodeURIComponent(modelName) + '&transpose=0&f0_method=rmvpe');
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 

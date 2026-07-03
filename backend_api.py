@@ -88,6 +88,7 @@ app = FastAPI(title="RVC Voice Anonymous API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|10\.[0-9.]+|192\.168\.[0-9.]+|172\.(1[6-9]|2[0-9]|3[0-1])\.[0-9.]+):5173",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -1259,4 +1260,4 @@ if FRONTEND_DIST.exists():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("backend_api:app", host="127.0.0.1", port=7860, reload=False)
+    uvicorn.run("backend_api:app", host="0.0.0.0", port=7860, reload=False)
